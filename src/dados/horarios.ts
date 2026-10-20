@@ -1,4 +1,4 @@
-// Exemplos: altere aqui os nomes das disciplinas.
+
 const portugues = {"disciplina": "Língua Portuguesa"};
 const matematica = {"disciplina": "Matemática"};
 const historia = {"disciplina": "História"};
@@ -13,9 +13,6 @@ const filosofia = {"disciplina": "Filosofia"};
 const sociologia = {"disciplina": "Sociologia"};
 const aulaTecnica = {"disciplina": "Componente técnico"};
 
-// Cada turma tem uma lista de aulas.
-// Cada linha representa um horário, na ordem: segunda, terça, quarta, quinta e sexta.
-// Por exemplo: a primeira linha contém as cinco aulas das 07:00.
 export const grades = [
   {
     turma: "1.1",
