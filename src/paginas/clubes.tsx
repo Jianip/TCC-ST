@@ -34,13 +34,23 @@ export default function Clubes() {
   );
 
   const mostrarRobotica = mostrarClube(
-    "Clube de Robótica Tecnologia Explore a tecnologia e a criatividade para transformar ideias em projetos e resolver desafios em equipe.",
+    "Clube de Robótica Tecnologia Construção de protótipos, automação e introdução à programação de circuitos. Ideal para quem quer aprender a criar projetos do zero.",
     "Tecnologia",
   );
 
   const mostrarLeitura = mostrarClube(
-    "Clube de Leitura Arte e cultura Descubra novas histórias e compartilhe suas leituras favoritas em um espaço de conversa e imaginação.",
+    "Clube do Livro Literatura Leituras de obras contemporâneas, mangás, literatura clássica e debates sobre criação de roteiros e histórias.",
+    "Literatura",
+  );
+
+  const mostrarTeatro = mostrarClube(
+    "Clube de Teatro Arte e cultura Espaço para desenvolver a oratória, expressão corporal e atuar em peças escolares e oficinas de improviso.",
     "Arte e cultura",
+  );
+
+  const mostrarXadrez = mostrarClube(
+    "Clube de Xadrez Raciocínio Treinos de aberturas, táticas de jogo e organização de torneios internos da escola para todos os níveis de conhecimento.",
+    "Raciocínio",
   );
 
   return (
@@ -143,6 +153,28 @@ export default function Clubes() {
             Mídia & Comunicação
           </button>
 
+          <button
+            type="button"
+            onClick={() => setCategoria("Raciocínio")}
+            aria-pressed={categoria === "Raciocínio"}
+            className="flex items-center gap-2 rounded-full border border-transparent px-3 py-2 text-sm hover:border-blue-700 aria-pressed:border-blue-700 aria-pressed:bg-blue-700 aria-pressed:text-white"
+          >
+            <span aria-hidden="true" className="h-3 w-3 rounded-full bg-orange-600" />
+
+            Raciocínio
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setCategoria("Literatura")}
+            aria-pressed={categoria === "Literatura"}
+            className="flex items-center gap-2 rounded-full border border-transparent px-3 py-2 text-sm hover:border-blue-700 aria-pressed:border-blue-700 aria-pressed:bg-blue-700 aria-pressed:text-white"
+          >
+            <span aria-hidden="true" className="h-3 w-3 rounded-full bg-pink-600" />
+
+            Literatura
+          </button>
+
         </div>
 
         <p className="mb-5 text-center text-xs text-slate-500">
@@ -150,6 +182,262 @@ export default function Clubes() {
         </p>
 
         <div className="grid gap-7 sm:grid-cols-2 sm:gap-10">
+          {mostrarRobotica && (
+            <div className="flex flex-col overflow-hidden rounded-3xl border-2 border-blue-700 bg-white">
+              <div className="relative flex h-44 items-center justify-center sm:h-52 bg-blue-600">
+                <span aria-hidden="true" className="text-6xl">
+                  🤖
+                </span>
+
+                <img
+                  src="/imagens/robotica.jpeg"
+                  alt=""
+                  loading="lazy"
+                  onLoad={(evento) => { evento.currentTarget.hidden = false; }}
+                  onError={(erro) => { erro.currentTarget.hidden = true; }}
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+
+              </div>
+
+              <div className="flex flex-1 flex-col p-5">
+                <h2 className="text-lg font-bold">
+                  <span aria-hidden="true">🤖 </span>Clube de Robótica
+                </h2>
+
+                <div className="mt-3 space-y-3 text-sm">
+                  <p>
+                    <strong>Categoria:</strong> <span className="rounded px-1.5 py-0.5 text-white bg-blue-600">Tecnologia</span>
+
+                  </p>
+
+                  <p>
+                    <strong>Líder:</strong> Marcos Júnior
+                  </p>
+
+                  <p>
+                    <strong>Horário:</strong> Quartas às 13h15
+                  </p>
+
+                  <p>
+                    <strong>Local:</strong> Sala Maker
+                  </p>
+
+                </div>
+
+                <p className="mt-4 border-t border-slate-300 pt-4 text-sm leading-relaxed text-slate-700">
+                  Construção de protótipos, automação e introdução à programação de circuitos. Ideal para quem quer aprender a criar projetos do zero.
+                </p>
+
+                <div className="mt-auto flex flex-col items-center gap-3 pt-5">
+                  <Link to="/clubes/robotica#participar" className="rounded-full bg-blue-600 px-6 py-2 text-xs font-bold uppercase text-white hover:bg-blue-800">
+                    Como participar
+                  </Link>
+
+                  <Link to="/clubes/robotica" className="text-xs font-semibold text-blue-700 hover:underline">
+                    Ver detalhes
+                  </Link>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          )}
+
+          {mostrarTeatro && (
+            <div className="flex flex-col overflow-hidden rounded-3xl border-2 border-blue-700 bg-white">
+              <div className="relative flex h-44 items-center justify-center sm:h-52 bg-purple-600">
+                <span aria-hidden="true" className="text-6xl">
+                  🎭
+                </span>
+
+                <img
+                  src="/imagens/teatro.jpeg"
+                  alt=""
+                  loading="lazy"
+                  onLoad={(evento) => { evento.currentTarget.hidden = false; }}
+                  onError={(erro) => { erro.currentTarget.hidden = true; }}
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+
+              </div>
+
+              <div className="flex flex-1 flex-col p-5">
+                <h2 className="text-lg font-bold">
+                  <span aria-hidden="true">🎭 </span>Clube de Teatro
+                </h2>
+
+                <div className="mt-3 space-y-3 text-sm">
+                  <p>
+                    <strong>Categoria:</strong> <span className="rounded px-1.5 py-0.5 text-white bg-purple-600">Arte e cultura</span>
+
+                  </p>
+
+                  <p>
+                    <strong>Líder:</strong> Thales
+                  </p>
+
+                  <p>
+                    <strong>Horário:</strong> Terças às 13h30
+                  </p>
+
+                  <p>
+                    <strong>Local:</strong> Auditório
+                  </p>
+
+                </div>
+
+                <p className="mt-4 border-t border-slate-300 pt-4 text-sm leading-relaxed text-slate-700">
+                  Espaço para desenvolver a oratória, expressão corporal e atuar em peças escolares e oficinas de improviso.
+                </p>
+
+                <div className="mt-auto flex flex-col items-center gap-3 pt-5">
+                  <Link to="/clubes/teatro#participar" className="rounded-full bg-blue-600 px-6 py-2 text-xs font-bold uppercase text-white hover:bg-blue-800">
+                    Como participar
+                  </Link>
+
+                  <Link to="/clubes/teatro" className="text-xs font-semibold text-blue-700 hover:underline">
+                    Ver detalhes
+                  </Link>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          )}
+
+          {mostrarXadrez && (
+            <div className="flex flex-col overflow-hidden rounded-3xl border-2 border-blue-700 bg-white">
+              <div className="relative flex h-44 items-center justify-center sm:h-52 bg-blue-600">
+                <span aria-hidden="true" className="text-6xl">
+                  ♟️
+                </span>
+
+                <img
+                  src="/imagens/xadrez.jpeg"
+                  alt=""
+                  loading="lazy"
+                  onLoad={(evento) => { evento.currentTarget.hidden = false; }}
+                  onError={(erro) => { erro.currentTarget.hidden = true; }}
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+
+              </div>
+
+              <div className="flex flex-1 flex-col p-5">
+                <h2 className="text-lg font-bold">
+                  <span aria-hidden="true">♟️ </span>Clube de Xadrez
+                </h2>
+
+                <div className="mt-3 space-y-3 text-sm">
+                  <p>
+                    <strong>Categoria:</strong> <span className="rounded px-1.5 py-0.5 text-white bg-orange-600">Raciocínio</span>
+
+                  </p>
+
+                  <p>
+                    <strong>Líder:</strong> Samuel
+                  </p>
+
+                  <p>
+                    <strong>Horário:</strong> Quintas às 13h30
+                  </p>
+
+                  <p>
+                    <strong>Local:</strong> Biblioteca
+                  </p>
+
+                </div>
+
+                <p className="mt-4 border-t border-slate-300 pt-4 text-sm leading-relaxed text-slate-700">
+                  Treinos de aberturas, táticas de jogo e organização de torneios internos da escola para todos os níveis de conhecimento.
+                </p>
+
+                <div className="mt-auto flex flex-col items-center gap-3 pt-5">
+                  <Link to="/clubes/xadrez#participar" className="rounded-full bg-blue-600 px-6 py-2 text-xs font-bold uppercase text-white hover:bg-blue-800">
+                    Como participar
+                  </Link>
+
+                  <Link to="/clubes/xadrez" className="text-xs font-semibold text-blue-700 hover:underline">
+                    Ver detalhes
+                  </Link>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          )}
+
+          {mostrarLeitura && (
+            <div className="flex flex-col overflow-hidden rounded-3xl border-2 border-blue-700 bg-white">
+              <div className="relative flex h-44 items-center justify-center sm:h-52 bg-pink-600">
+                <span aria-hidden="true" className="text-6xl">
+                  📚
+                </span>
+
+                <img
+                  src="/imagens/leitura.jpeg"
+                  alt=""
+                  loading="lazy"
+                  onLoad={(evento) => { evento.currentTarget.hidden = false; }}
+                  onError={(erro) => { erro.currentTarget.hidden = true; }}
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+
+              </div>
+
+              <div className="flex flex-1 flex-col p-5">
+                <h2 className="text-lg font-bold">
+                  <span aria-hidden="true">📚 </span>Clube do Livro
+                </h2>
+
+                <div className="mt-3 space-y-3 text-sm">
+                  <p>
+                    <strong>Categoria:</strong> <span className="rounded px-1.5 py-0.5 text-white bg-pink-600">Literatura</span>
+
+                  </p>
+
+                  <p>
+                    <strong>Líder:</strong> Letícia
+                  </p>
+
+                  <p>
+                    <strong>Horário:</strong> Sextas às 13h20
+                  </p>
+
+                  <p>
+                    <strong>Local:</strong> Espaço de Leitura
+                  </p>
+
+                </div>
+
+                <p className="mt-4 border-t border-slate-300 pt-4 text-sm leading-relaxed text-slate-700">
+                  Leituras de obras contemporâneas, mangás, literatura clássica e debates sobre criação de roteiros e histórias.
+                </p>
+
+                <div className="mt-auto flex flex-col items-center gap-3 pt-5">
+                  <Link to="/clubes/leitura#participar" className="rounded-full bg-blue-600 px-6 py-2 text-xs font-bold uppercase text-white hover:bg-blue-800">
+                    Como participar
+                  </Link>
+
+                  <Link to="/clubes/leitura" className="text-xs font-semibold text-blue-700 hover:underline">
+                    Ver detalhes
+                  </Link>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          )}
+
           {mostrarEsportes && (
             <div className="flex flex-col overflow-hidden rounded-3xl border-2 border-blue-700 bg-white">
               <div className="relative flex h-44 items-center justify-center sm:h-52 bg-red-600">
@@ -158,9 +446,10 @@ export default function Clubes() {
                 </span>
 
                 <img
-                  src="https://images.unsplash.com/photo-1546519638-68e109498ffc?w=900&q=80&fit=crop"
+                  src="/imagens/esporte.jpeg"
                   alt=""
                   loading="lazy"
+                  onLoad={(evento) => { evento.currentTarget.hidden = false; }}
                   onError={(erro) => { erro.currentTarget.hidden = true; }}
                   className="absolute inset-0 h-full w-full object-cover"
                 />
@@ -221,9 +510,10 @@ export default function Clubes() {
                 </span>
 
                 <img
-                  src="https://images.unsplash.com/photo-1555597673-b21d5c935865?w=900&q=80&fit=crop"
+                  src="/imagens/taekondow.jpeg"
                   alt=""
                   loading="lazy"
+                  onLoad={(evento) => { evento.currentTarget.hidden = false; }}
                   onError={(erro) => { erro.currentTarget.hidden = true; }}
                   className="absolute inset-0 h-full w-full object-cover"
                 />
@@ -284,9 +574,10 @@ export default function Clubes() {
                 </span>
 
                 <img
-                  src="https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=900&q=80&fit=crop"
+                  src="/imagens/coral.jpeg"
                   alt=""
                   loading="lazy"
+                  onLoad={(evento) => { evento.currentTarget.hidden = false; }}
                   onError={(erro) => { erro.currentTarget.hidden = true; }}
                   className="absolute inset-0 h-full w-full object-cover"
                 />
@@ -347,9 +638,10 @@ export default function Clubes() {
                 </span>
 
                 <img
-                  src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=900&q=80&fit=crop"
+                  src="/imagens/podcast.jpeg"
                   alt=""
                   loading="lazy"
+                  onLoad={(evento) => { evento.currentTarget.hidden = false; }}
                   onError={(erro) => { erro.currentTarget.hidden = true; }}
                   className="absolute inset-0 h-full w-full object-cover"
                 />
@@ -402,136 +694,10 @@ export default function Clubes() {
 
           )}
 
-          {mostrarRobotica && (
-            <div className="flex flex-col overflow-hidden rounded-3xl border-2 border-blue-700 bg-white">
-              <div className="relative flex h-44 items-center justify-center sm:h-52 bg-blue-600">
-                <span aria-hidden="true" className="text-6xl">
-                  🤖
-                </span>
-
-                <img
-                  src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=900&q=80&fit=crop"
-                  alt=""
-                  loading="lazy"
-                  onError={(erro) => { erro.currentTarget.hidden = true; }}
-                  className="absolute inset-0 h-full w-full object-cover"
-                />
-
-              </div>
-
-              <div className="flex flex-1 flex-col p-5">
-                <h2 className="text-lg font-bold">
-                  <span aria-hidden="true">🤖 </span>Clube de Robótica
-                </h2>
-
-                <div className="mt-3 space-y-3 text-sm">
-                  <p>
-                    <strong>Categoria:</strong> <span className="rounded px-1.5 py-0.5 text-white bg-blue-600">Tecnologia</span>
-
-                  </p>
-
-                  <p>
-                    <strong>Líder:</strong> A confirmar
-                  </p>
-
-                  <p>
-                    <strong>Horário:</strong> A confirmar
-                  </p>
-
-                  <p>
-                    <strong>Local:</strong> A confirmar
-                  </p>
-
-                </div>
-
-                <p className="mt-4 border-t border-slate-300 pt-4 text-sm leading-relaxed text-slate-700">
-                  Explore a tecnologia e a criatividade para transformar ideias em projetos e resolver desafios em equipe.
-                </p>
-
-                <div className="mt-auto flex flex-col items-center gap-3 pt-5">
-                  <Link to="/clubes/robotica#participar" className="rounded-full bg-blue-600 px-6 py-2 text-xs font-bold uppercase text-white hover:bg-blue-800">
-                    Como participar
-                  </Link>
-
-                  <Link to="/clubes/robotica" className="text-xs font-semibold text-blue-700 hover:underline">
-                    Ver detalhes
-                  </Link>
-
-                </div>
-
-              </div>
-
-            </div>
-
-          )}
-
-          {mostrarLeitura && (
-            <div className="flex flex-col overflow-hidden rounded-3xl border-2 border-blue-700 bg-white">
-              <div className="relative flex h-44 items-center justify-center sm:h-52 bg-purple-600">
-                <span aria-hidden="true" className="text-6xl">
-                  📚
-                </span>
-
-                <img
-                  src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=900&q=80&fit=crop"
-                  alt=""
-                  loading="lazy"
-                  onError={(erro) => { erro.currentTarget.hidden = true; }}
-                  className="absolute inset-0 h-full w-full object-cover"
-                />
-
-              </div>
-
-              <div className="flex flex-1 flex-col p-5">
-                <h2 className="text-lg font-bold">
-                  <span aria-hidden="true">📚 </span>Clube de Leitura
-                </h2>
-
-                <div className="mt-3 space-y-3 text-sm">
-                  <p>
-                    <strong>Categoria:</strong> <span className="rounded px-1.5 py-0.5 text-white bg-purple-600">Arte e cultura</span>
-
-                  </p>
-
-                  <p>
-                    <strong>Líder:</strong> A confirmar
-                  </p>
-
-                  <p>
-                    <strong>Horário:</strong> A confirmar
-                  </p>
-
-                  <p>
-                    <strong>Local:</strong> A confirmar
-                  </p>
-
-                </div>
-
-                <p className="mt-4 border-t border-slate-300 pt-4 text-sm leading-relaxed text-slate-700">
-                  Descubra novas histórias e compartilhe suas leituras favoritas em um espaço de conversa e imaginação.
-                </p>
-
-                <div className="mt-auto flex flex-col items-center gap-3 pt-5">
-                  <Link to="/clubes/leitura#participar" className="rounded-full bg-blue-600 px-6 py-2 text-xs font-bold uppercase text-white hover:bg-blue-800">
-                    Como participar
-                  </Link>
-
-                  <Link to="/clubes/leitura" className="text-xs font-semibold text-blue-700 hover:underline">
-                    Ver detalhes
-                  </Link>
-
-                </div>
-
-              </div>
-
-            </div>
-
-          )}
-
         </div>
 
         <p role="status" className="mt-6 text-center text-sm text-slate-600">
-          {!mostrarEsportes && !mostrarTaekwondo && !mostrarCoral && !mostrarRadio && !mostrarRobotica && !mostrarLeitura && "Nenhum clube encontrado. Tente outro tema ou categoria."}
+          {!mostrarEsportes && !mostrarTaekwondo && !mostrarCoral && !mostrarRadio && !mostrarRobotica && !mostrarLeitura && !mostrarTeatro && !mostrarXadrez && "Nenhum clube encontrado. Tente outro tema ou categoria."}
         </p>
 
       </section>

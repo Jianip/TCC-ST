@@ -5,13 +5,11 @@ import { pegarPerfil, salvarPerfil } from "../dados/perfil";
 type ConfiguracoesProps = {
   modoEscuro: boolean;
   mudarTema: () => void;
-  sair: () => void;
 };
 
 export default function Configuracoes({
   modoEscuro,
   mudarTema,
-  sair,
 }:
 
  ConfiguracoesProps) {
@@ -44,7 +42,7 @@ export default function Configuracoes({
 
       <section className="mx-auto w-full max-w-3xl flex-1 px-6 py-10">
 
-        <p className="text-sm font-bold tracking-widest text-blue-600">MINHA CONTA</p>
+        <p className="text-sm font-bold tracking-widest text-blue-600">MEU PERFIL</p>
 
         <h1 className="mt-2 text-3xl font-bold">Configurações</h1>
 
@@ -111,13 +109,6 @@ export default function Configuracoes({
         
         </form>
 
-        <button
-          type="button"
-          onClick={sair}
-          className="mt-6 w-full rounded-lg bg-red-700 px-5 py-3 font-bold text-white hover:bg-red-800"
-        >
-          Sair da conta
-        </button>
 
       </section>
 

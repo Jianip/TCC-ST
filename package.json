@@ -5,12 +5,11 @@
   "type": "module",
   "scripts": {
     "build": "tsc && vite build",
-    "dev": "node server/dev.mjs",
+    "dev": "vite",
     "preview": "vite preview",
     "typecheck": "tsc",
     "server": "node server/auth.mjs",
-    "test:auth": "node --test server/auth.test.mjs",
-    "build:demo": "tsc && vite build --mode demonstracao"
+    "test:auth": "node --test server/auth.test.mjs"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",

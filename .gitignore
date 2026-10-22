@@ -1,5 +1,12 @@
 node_modules/
+dist/
 build/
 .react-router/
-
+tmp/
 server/data/
+
+.env
+.env.*
+!.env.example
+
+*.log
