@@ -5,7 +5,7 @@ import InformarObjeto from "./paginas/informar-objeto";
 import Agenda from "./paginas/agenda";
 import Clubes from "./paginas/clubes";
 import DetalhesClube from "./paginas/detalhes-clube";
-import Eventos from "./paginas/eventos";
+import DatasComemorativas from "./paginas/datas-comemorativas";
 import Horarios from "./paginas/horarios";
 import Inicio from "./paginas/inicio";
 import Configuracoes from "./paginas/configuracoes";
@@ -74,7 +74,6 @@ export default function App() {
     localStorage.setItem("tema", modoEscuro ? "claro" : "escuro");
   }
 
-  // Sem sessão, qualquer endereço do portal leva ao login.
   if (carregando) return <main className="p-8 text-center" role="status">Verificando sua sessão...</main>;
   if (erroSessao) return <main className="p-8 text-center"><p role="alert">{erroSessao}</p><button className="mt-4 rounded bg-blue-800 px-5 py-2 text-white" onClick={() => void verificarSessao()}>Tentar novamente</button></main>;
 
@@ -96,7 +95,8 @@ export default function App() {
           element={modoDemonstracao ? <Login entrar={entrar} /> : <Navigate to="/" replace />}
         />
         <Route path="/horarios" element={<Horarios />} />
-        <Route path="/eventos" element={<Eventos />} />
+        <Route path="/datas-comemorativas" element={<DatasComemorativas />} />
+        <Route path="/eventos" element={<Navigate to="/datas-comemorativas" replace />} />
         <Route path="/clubes" element={<Clubes />} />
         <Route path="/clubes/:clube" element={<DetalhesClube />} />
         <Route path="/agenda" element={<Agenda />} />

@@ -1,3 +1,4 @@
+import Cabecalho from "../componentes/cabecalho";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { pegarPerfil } from "../dados/perfil";
@@ -64,67 +65,7 @@ export default function Inicio() {
 
     <main className="flex min-h-screen flex-col bg-white text-slate-900">
 
-      <nav className="bg-blue-700 px-5 py-3 shadow-md">
-
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-5">
-
-          <img
-            src="/imagens/logo-sanico.jpg"
-            alt="Logo da escola"
-            className="h-12 w-12 rounded-full object-cover"
-          />
-
-          <div className="hidden items-center gap-6 text-sm font-semibold text-white md:flex">
-
-            <Link to="/" className="underline underline-offset-4">
-              Início
-            </Link>
-
-            <Link to="/eventos" className="hover:underline">
-              Eventos
-            </Link>
-
-            <Link to="/clubes" className="hover:underline">
-              Clubes
-            </Link>
-
-            <Link to="/agenda" className="hover:underline">
-              Agenda Escolar
-            </Link>
-
-            <Link to="/horarios" className="hover:underline">
-              Horários Escolares
-            </Link>
-
-            <Link to="/achados-e-perdidos" className="hover:underline">
-              Achados e Perdidos
-            </Link>
-
-          </div>
-
-          <div className="flex items-center gap-2 text-white">
-
-            <span className="hidden text-xs sm:block">Olá, {perfil.nome}</span>
-
-            <img
-              src={perfil.foto}
-              alt="Foto do perfil"
-              className="h-9 w-9 rounded-full object-cover"
-            />
-
-            <Link
-              to="/configuracoes"
-              aria-label="Configurações"
-              className="text-lg hover:text-blue-200"
-            >
-              ⚙
-            </Link>
-
-          </div>
-
-        </div>
-
-      </nav>
+      <Cabecalho />
 
       <section className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-10 px-6 py-12 sm:px-10">
 

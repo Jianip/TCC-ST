@@ -1,5 +1,5 @@
+import Cabecalho from "../componentes/cabecalho";
 import { ChangeEvent, FormEvent, useState } from "react";
-import { Link } from "react-router-dom";
 import { pegarPerfil, salvarPerfil } from "../dados/perfil";
 
 type ConfiguracoesProps = {
@@ -40,19 +40,7 @@ export default function Configuracoes({
   return (
     <main className="flex min-h-screen flex-col bg-slate-50 text-slate-900">
 
-      <nav className="bg-blue-700 px-5 py-3 shadow-md">
-
-        <div className="mx-auto flex max-w-6xl items-center justify-between">
-          
-          <Link to="/" className="flex items-center gap-3 text-sm font-bold text-white hover:underline">
-            ← Voltar ao início
-          </Link>
-
-          <img src="/imagens/logo-sanico.jpg" alt="Logo da escola" className="h-12 w-12 rounded-full object-cover" />
-        
-        </div>
-
-      </nav>
+      <Cabecalho />
 
       <section className="mx-auto w-full max-w-3xl flex-1 px-6 py-10">
 

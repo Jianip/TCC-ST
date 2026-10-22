@@ -21,7 +21,6 @@ export function createAuthServer(databasePath = 'server/data/portal.sqlite') {
     CREATE TABLE IF NOT EXISTS sessions (
       token TEXT PRIMARY KEY, user_id INTEGER NOT NULL, expires INTEGER NOT NULL
     );`);
-  // Atualiza bancos existentes sem apagar as contas cadastradas.
   if (!db.prepare('PRAGMA table_info(users)').all().some(column => column.name === 'email')) {
     db.exec("ALTER TABLE users ADD COLUMN email TEXT NOT NULL DEFAULT ''");
   }
@@ -41,7 +40,6 @@ export function createAuthServer(databasePath = 'server/data/portal.sqlite') {
         return reply(200, { usuario: user ? publicUser(user) : null });
       }
       if (req.method !== 'POST' || !['/api/auth/login', '/api/auth/register', '/api/auth/logout'].includes(req.url)) return reply(404, { mensagem: 'Rota não encontrada.' });
-      // JSON and same-origin checks prevent cross-site form submissions.
       const origin = req.headers.origin;
       if ((origin && new URL(origin).host !== req.headers.host) || req.headers['sec-fetch-site'] === 'cross-site') return reply(403, { mensagem: 'Origem não permitida.' });
       if (!req.headers['content-type']?.startsWith('application/json')) return reply(415, { mensagem: 'Envie os dados em JSON.' });

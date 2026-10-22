@@ -1,6 +1,5 @@
+import Cabecalho from "../componentes/cabecalho";
 import { FormEvent, useState } from "react";
-import { Link } from "react-router-dom";
-import { pegarPerfil } from "../dados/perfil";
 
 
 type Compromisso = {
@@ -42,7 +41,6 @@ function dataParaInput(data: Date) {
 }
 
 export default function Agenda() {
-  const perfil = pegarPerfil();
 
 
   const [mes, setMes] = useState(new Date());
@@ -180,50 +178,7 @@ export default function Agenda() {
   return (
     <main className="flex min-h-screen flex-col bg-slate-50 text-slate-900">
      
-      <nav className="bg-blue-700 px-5 py-3 shadow-md">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-5">
-          <img
-            src="/imagens/logo-sanico.jpg"
-            alt="Logo da escola"
-            className="h-12 w-12 rounded-full object-cover"
-          />
-          <div className="hidden items-center gap-6 text-sm font-semibold text-white md:flex">
-            <Link to="/" className="hover:underline">
-              Início
-            </Link>
-            <Link to="/eventos" className="hover:underline">
-              Eventos
-            </Link>
-            <Link to="/clubes" className="hover:underline">
-              Clubes
-            </Link>
-            <Link to="/agenda" className="underline underline-offset-4">
-              Agenda Escolar
-            </Link>
-            <Link to="/horarios" className="hover:underline">
-              Horários Escolares
-            </Link>
-            <Link to="/achados-e-perdidos" className="hover:underline">
-              Achados e Perdidos
-            </Link>
-          </div>
-          <div className="flex items-center gap-2 text-white">
-            <span className="hidden text-xs sm:block">Olá, {perfil.nome}</span>
-            <img
-              src={perfil.foto}
-              alt="Foto do perfil"
-              className="h-9 w-9 rounded-full object-cover"
-            />
-            <Link
-              to="/configuracoes"
-              aria-label="Configurações"
-              className="text-lg hover:text-blue-200"
-            >
-              ⚙
-            </Link>
-          </div>
-        </div>
-      </nav>
+      <Cabecalho />
 
       <section className="mx-auto w-full max-w-7xl flex-1 px-4 py-7 sm:p-10">
         <p className="text-sm font-bold tracking-[0.2em] text-blue-600">

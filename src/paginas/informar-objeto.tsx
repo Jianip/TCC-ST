@@ -1,3 +1,4 @@
+import Cabecalho from "../componentes/cabecalho";
 import { useState, type FormEvent, type ChangeEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -7,10 +8,8 @@ import {
   hoje,
   dataValida,
 } from "../dados/achados-perdidos";
-import { pegarPerfil } from "../dados/perfil";
 
 export default function InformarObjeto() {
-  const perfil = pegarPerfil();
   const navegar = useNavigate();
   const [foto, setFoto] = useState("");
   const [erro, setErro] = useState("");
@@ -132,77 +131,7 @@ export default function InformarObjeto() {
 
     <main className="flex min-h-screen flex-col bg-slate-50 text-slate-900">
 
-      <nav className="bg-blue-700 px-5 py-3 shadow-md">
-
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-5">
-
-          <img
-            src="/imagens/logo-sanico.jpg"
-            alt="Logo da escola"
-            className="h-12 w-12 rounded-full object-cover"
-          />
-
-          <div className="hidden items-center gap-6 text-sm font-semibold text-white md:flex">
-
-            <Link to="/" className="hover:underline">
-              Início
-
-            </Link>
-
-            <Link to="/eventos" className="hover:underline">
-              Eventos
-
-            </Link>
-
-            <Link to="/clubes" className="hover:underline">
-              Clubes
-
-            </Link>
-
-            <Link to="/agenda" className="hover:underline">
-              Agenda Escolar
-
-            </Link>
-
-            <Link to="/horarios" className="hover:underline">
-              Horários Escolares
-
-            </Link>
-
-            <Link
-              to="/achados-e-perdidos"
-              className="underline underline-offset-4"
-            >
-              Achados e Perdidos
-
-            </Link>
-
-          </div>
-
-          <div className="flex items-center gap-2 text-white">
-
-            <span className="hidden text-xs sm:block">Olá, {perfil.nome}</span>
-
-            <img
-              src={perfil.foto}
-              alt="Foto do perfil"
-              className="h-9 w-9 rounded-full object-cover"
-            />
-
-            <Link
-              to="/configuracoes"
-              aria-label="Configurações"
-              className="text-lg hover:text-blue-200"
-            >
-              ⚙
-
-            </Link>
-
-          </div>
-
-        </div>
-
-      </nav>
+      <Cabecalho />
 
       <section className="mx-auto w-full max-w-3xl flex-1 px-6 py-10">
 

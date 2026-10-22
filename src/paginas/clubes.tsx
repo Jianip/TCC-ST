@@ -1,169 +1,538 @@
+import Cabecalho from "../componentes/cabecalho";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { pegarPerfil } from "../dados/perfil";
 
 export default function Clubes() {
-  const perfil = pegarPerfil();
+  const [busca, setBusca] = useState("");
+  const [categoria, setCategoria] = useState("Todos");
+
+  function mostrarClube(texto: string, categoriaClube: string) {
+    const encontrouTexto = texto.toLowerCase().includes(busca.toLowerCase());
+    const encontrouCategoria = categoria === "Todos" || categoria === categoriaClube;
+
+    return encontrouTexto && encontrouCategoria;
+  }
+
+  const mostrarEsportes = mostrarClube(
+    "Clube de Esportes Esportes Organização de campeonatos internos (futsal, vôlei e basquete) e treinos para os times representativos da escola.",
+    "Esportes",
+  );
+
+  const mostrarTaekwondo = mostrarClube(
+    "Clube de Taekwondo Esportes Prática de artes marciais focada em disciplina, defesa pessoal, autocontrole e condicionamento físico para alunos de todos os níveis.",
+    "Esportes",
+  );
+
+  const mostrarCoral = mostrarClube(
+    "Clube de Coral & Canto Arte e cultura Técnica vocal, percepção musical e ensaios de canto em grupo para apresentações nos eventos oficiais e datas comemorativas da escola.",
+    "Arte e cultura",
+  );
+
+  const mostrarRadio = mostrarClube(
+    "Clube de Rádio & Podcast Mídia & Comunicação Produção de podcasts, locução para os intervalos escolares, técnicas de edição de áudio e entrevistas com a comunidade escolar.",
+    "Mídia & Comunicação",
+  );
+
+  const mostrarRobotica = mostrarClube(
+    "Clube de Robótica Tecnologia Explore a tecnologia e a criatividade para transformar ideias em projetos e resolver desafios em equipe.",
+    "Tecnologia",
+  );
+
+  const mostrarLeitura = mostrarClube(
+    "Clube de Leitura Arte e cultura Descubra novas histórias e compartilhe suas leituras favoritas em um espaço de conversa e imaginação.",
+    "Arte e cultura",
+  );
+
   return (
     <main className="flex min-h-screen flex-col bg-white text-slate-900">
-      
-      <nav className="bg-blue-700 px-5 py-3 shadow-md">
-       
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-5">
-          <img
-            src="/imagens/logo-sanico.jpg"
-            alt="Logo da escola"
-            className="h-12 w-12 rounded-full object-cover"
-          />
+      <Cabecalho />
 
-          <div className="hidden items-center gap-6 text-sm font-semibold text-white md:flex">
-            <Link to="/" className="hover:underline">
-              Início
-            </Link>
-            <Link to="/eventos" className="hover:underline">
-              Eventos
-            </Link>
-            <Link to="/clubes" className="underline underline-offset-4">
-              Clubes
-            </Link>
-            <Link to="/agenda" className="hover:underline">
-              Agenda Escolar
-            </Link>
-            <Link to="/horarios" className="hover:underline">
-              Horários Escolares
-            </Link>
-            <Link to="/achados-e-perdidos" className="hover:underline">
-              Achados e Perdidos
-            </Link>
-          </div>
+      <section className="mx-auto w-full max-w-5xl flex-1 px-5 py-9 sm:px-10">
+        <div className="text-center">
+          <h1 className="text-3xl font-bold text-blue-700">
+            Clubes de Protagonismo
+          </h1>
 
-          <div className="flex items-center gap-2 text-white">
-
-            <span className="hidden text-xs sm:block">Olá, {perfil.nome}</span>
-
-            <img
-              src={perfil.foto}
-              alt="Foto do perfil"
-              className="h-9 w-9 rounded-full object-cover"
-            />
-
-            <Link to="/configuracoes" aria-label="Configurações" className="text-lg hover:text-blue-200">
-              ⚙
-            </Link>
-
-          </div>
-
-        </div>
-
-      </nav>
-
-      <section className="mx-auto w-full max-w-6xl flex-1 px-6 py-12 sm:px-10">
-
-        <div className="mb-8 max-w-2xl">
-
-          <span className="text-sm font-bold uppercase tracking-widest text-blue-600">
-            Participe
-          </span>
-
-          <h1 className="mt-2 text-3xl font-bold sm:text-4xl">Meus Clubes</h1>
-          
-          <p className="mt-3 leading-relaxed text-slate-500">
-            Conheça os clubes da escola, descubra novas atividades e encontre o
-            lugar ideal para desenvolver seus talentos.
+          <p className="mt-3 font-semibold text-slate-700">
+            Liderança, criatividade e trabalho em equipe no seu dia a dia escolar.
           </p>
 
-        </div>
+          <div className="relative mx-auto mt-8 max-w-md">
+            <label htmlFor="busca-clubes" className="sr-only">
+              Pesquisar clube ou tema
+            </label>
 
-        <div className="grid gap-6 sm:grid-cols-2">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="pointer-events-none absolute left-3 top-3 h-5 w-5">
+              <circle cx="10" cy="10" r="6" />
 
-          <div className="group relative overflow-hidden rounded-2xl border border-blue-100 bg-white p-6 shadow-md transition duration-300 hover:-translate-y-1 hover:shadow-xl">
-            
-            <div className="" />
-            
-            <h2 className="text-xl font-bold text-slate-900">
-              Clube de Esportes
-            </h2>
+              <path d="m15 15 5 5" />
 
-            <p className="mt-3 text-sm leading-6 text-slate-600">
-              Pratique diferentes modalidades, desenvolva o trabalho em equipe e
-              participe dos treinos e competições da escola.
-            </p>
+            </svg>
 
-            <Link to="/clubes/esportes" aria-label="Saiba mais sobre Clube de Esportes" className="mt-5 inline-flex items-center text-sm font-bold text-blue-700 hover:underline">
-              Saiba mais{" "}
+            <input
+              id="busca-clubes"
+              type="search"
+              value={busca}
+              onChange={(evento) => setBusca(evento.target.value)}
+              placeholder="Pesquisar clube ou tema..."
+              className="w-full rounded-lg border border-slate-500 bg-white py-3 pl-10 pr-12 text-sm focus:outline-2 focus:outline-offset-2 focus:outline-blue-700 [&::-webkit-search-cancel-button]:appearance-none"
+            />
 
-              <span className="ml-2 transition group-hover:translate-x-1">
-                →
-              </span>
+            {busca && (
+              <button type="button" onClick={() =>
+                 setBusca("")} aria-label="Limpar busca" className="absolute right-0 top-0 h-full w-11 rounded-r-lg text-xl hover:bg-slate-100">×
+              </button>
 
-            </Link>
-          </div>
-
-          <div className="group relative overflow-hidden rounded-2xl border border-blue-100 bg-white p-6 shadow-md transition duration-300 hover:-translate-y-1 hover:shadow-xl">
-            
-            <div className="" />
-
-            <h2 className="text-xl font-bold text-slate-900">Taekwondo</h2>
-            
-            <p className="mt-3 text-sm leading-6 text-slate-600">
-              Aprenda técnicas de defesa, disciplina e respeito enquanto
-              fortalece o corpo e a mente.
-            </p>
-
-            <Link to="/clubes/taekwondo" aria-label="Saiba mais sobre Taekwondo" className="mt-5 inline-flex items-center text-sm font-bold text-blue-700 hover:underline">
-              Saiba mais{" "}
-              <span className="ml-2 transition group-hover:translate-x-1">
-                →
-              </span>
-
-            </Link>
-
-          </div>
-
-          <div className="group relative overflow-hidden rounded-2xl border border-blue-100 bg-white p-6 shadow-md transition duration-300 hover:-translate-y-1 hover:shadow-xl">
-           
-            <div className="" />
-
-            <h2 className="text-xl font-bold text-slate-900">
-              Clube de Robótica
-            </h2>
-
-            <p className="mt-3 text-sm leading-6 text-slate-600">
-              Crie projetos, programe robôs e transforme ideias em soluções
-              usando tecnologia e muita criatividade.
-            </p>
-
-            <Link to="/clubes/robotica" aria-label="Saiba mais sobre Clube de Robótica" className="mt-5 inline-flex items-center text-sm font-bold text-blue-700 hover:underline">
-              Saiba mais{" "}
-              
-              <span className="ml-2 transition group-hover:translate-x-1">
-                →
-              </span>
-            </Link>
-          </div>
-
-          <div className="group relative overflow-hidden rounded-2xl border border-blue-100 bg-white p-6 shadow-md transition duration-300 hover:-translate-y-1 hover:shadow-xl">
-            
-            <div className="" />
-
-            <h2 className="text-xl font-bold text-slate-900">
-              Clube de Leitura
-            </h2>
-
-            <p className="mt-3 text-sm leading-6 text-slate-600">
-              Descubra novas histórias, compartilhe suas leituras favoritas e
-              participe de conversas inspiradoras.
-            </p>
-
-            <Link to="/clubes/leitura" aria-label="Saiba mais sobre Clube de Leitura" className="mt-5 inline-flex items-center text-sm font-bold text-blue-700 hover:underline">
-              Saiba mais{" "}
-              <span className="ml-2 transition group-hover:translate-x-1">
-                →
-              </span>
-            </Link>
+            )}
 
           </div>
 
         </div>
+
+        <div role="group" aria-label="Filtrar por categoria" className="mb-10 mt-12 flex flex-wrap justify-center gap-2">
+          <button
+            type="button"
+            onClick={() => setCategoria("Todos")}
+            aria-pressed={categoria === "Todos"}
+            className="flex items-center gap-2 rounded-full border border-transparent px-3 py-2 text-sm hover:border-blue-700 aria-pressed:border-blue-700 aria-pressed:bg-blue-700 aria-pressed:text-white"
+          >
+            Todos
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setCategoria("Tecnologia")}
+            aria-pressed={categoria === "Tecnologia"}
+            className="flex items-center gap-2 rounded-full border border-transparent px-3 py-2 text-sm hover:border-blue-700 aria-pressed:border-blue-700 aria-pressed:bg-blue-700 aria-pressed:text-white"
+          >
+            <span aria-hidden="true" className="h-3 w-3 rounded-full bg-blue-600" />
+
+            Tecnologia
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setCategoria("Arte e cultura")}
+            aria-pressed={categoria === "Arte e cultura"}
+            className="flex items-center gap-2 rounded-full border border-transparent px-3 py-2 text-sm hover:border-blue-700 aria-pressed:border-blue-700 aria-pressed:bg-blue-700 aria-pressed:text-white"
+          >
+            <span aria-hidden="true" className="h-3 w-3 rounded-full bg-purple-600" />
+
+            Arte e cultura
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setCategoria("Esportes")}
+            aria-pressed={categoria === "Esportes"}
+            className="flex items-center gap-2 rounded-full border border-transparent px-3 py-2 text-sm hover:border-blue-700 aria-pressed:border-blue-700 aria-pressed:bg-blue-700 aria-pressed:text-white"
+          >
+            <span aria-hidden="true" className="h-3 w-3 rounded-full bg-red-600" />
+
+            Esportes
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setCategoria("Mídia & Comunicação")}
+            aria-pressed={categoria === "Mídia & Comunicação"}
+            className="flex items-center gap-2 rounded-full border border-transparent px-3 py-2 text-sm hover:border-blue-700 aria-pressed:border-blue-700 aria-pressed:bg-blue-700 aria-pressed:text-white"
+          >
+            <span aria-hidden="true" className="h-3 w-3 rounded-full bg-yellow-600" />
+
+            Mídia & Comunicação
+          </button>
+
+        </div>
+
+        <p className="mb-5 text-center text-xs text-slate-500">
+          Consulte os dias, horários e locais de cada clube. Informações não disponíveis estão indicadas como “A confirmar”.
+        </p>
+
+        <div className="grid gap-7 sm:grid-cols-2 sm:gap-10">
+          {mostrarEsportes && (
+            <div className="flex flex-col overflow-hidden rounded-3xl border-2 border-blue-700 bg-white">
+              <div className="relative flex h-44 items-center justify-center sm:h-52 bg-red-600">
+                <span aria-hidden="true" className="text-6xl">
+                  ⚽
+                </span>
+
+                <img
+                  src="https://images.unsplash.com/photo-1546519638-68e109498ffc?w=900&q=80&fit=crop"
+                  alt=""
+                  loading="lazy"
+                  onError={(erro) => { erro.currentTarget.hidden = true; }}
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+
+              </div>
+
+              <div className="flex flex-1 flex-col p-5">
+                <h2 className="text-lg font-bold">
+                  <span aria-hidden="true">⚽ </span>Clube de Esportes
+                </h2>
+
+                <div className="mt-3 space-y-3 text-sm">
+                  <p>
+                    <strong>Categoria:</strong> <span className="rounded px-1.5 py-0.5 text-white bg-red-600">Esportes</span>
+
+                  </p>
+
+                  <p>
+                    <strong>Líder:</strong> Emillin
+                  </p>
+
+                  <p>
+                    <strong>Horário:</strong> Segunda, quarta e sexta às 13h15
+                  </p>
+
+                  <p>
+                    <strong>Local:</strong> Quadra Poliesportiva
+                  </p>
+
+                </div>
+
+                <p className="mt-4 border-t border-slate-300 pt-4 text-sm leading-relaxed text-slate-700">
+                  Organização de campeonatos internos (futsal, vôlei e basquete) e treinos para os times representativos da escola.
+                </p>
+
+                <div className="mt-auto flex flex-col items-center gap-3 pt-5">
+                  <Link to="/clubes/esportes#participar" className="rounded-full bg-blue-600 px-6 py-2 text-xs font-bold uppercase text-white hover:bg-blue-800">
+                    Como participar
+                  </Link>
+
+                  <Link to="/clubes/esportes" className="text-xs font-semibold text-blue-700 hover:underline">
+                    Ver detalhes
+                  </Link>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          )}
+
+          {mostrarTaekwondo && (
+            <div className="flex flex-col overflow-hidden rounded-3xl border-2 border-blue-700 bg-white">
+              <div className="relative flex h-44 items-center justify-center sm:h-52 bg-red-600">
+                <span aria-hidden="true" className="text-6xl">
+                  🥋
+                </span>
+
+                <img
+                  src="https://images.unsplash.com/photo-1555597673-b21d5c935865?w=900&q=80&fit=crop"
+                  alt=""
+                  loading="lazy"
+                  onError={(erro) => { erro.currentTarget.hidden = true; }}
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+
+              </div>
+
+              <div className="flex flex-1 flex-col p-5">
+                <h2 className="text-lg font-bold">
+                  <span aria-hidden="true">🥋 </span>Clube de Taekwondo
+                </h2>
+
+                <div className="mt-3 space-y-3 text-sm">
+                  <p>
+                    <strong>Categoria:</strong> <span className="rounded px-1.5 py-0.5 text-white bg-red-600">Esportes</span>
+
+                  </p>
+
+                  <p>
+                    <strong>Líder:</strong> Anderson Carolino Mendes
+                  </p>
+
+                  <p>
+                    <strong>Horário:</strong> Terça e quinta às 16h00
+                  </p>
+
+                  <p>
+                    <strong>Local:</strong> Quadra Poliesportiva
+                  </p>
+
+                </div>
+
+                <p className="mt-4 border-t border-slate-300 pt-4 text-sm leading-relaxed text-slate-700">
+                  Prática de artes marciais focada em disciplina, defesa pessoal, autocontrole e condicionamento físico para alunos de todos os níveis.
+                </p>
+
+                <div className="mt-auto flex flex-col items-center gap-3 pt-5">
+                  <Link to="/clubes/taekwondo#participar" className="rounded-full bg-blue-600 px-6 py-2 text-xs font-bold uppercase text-white hover:bg-blue-800">
+                    Como participar
+                  </Link>
+
+                  <Link to="/clubes/taekwondo" className="text-xs font-semibold text-blue-700 hover:underline">
+                    Ver detalhes
+                  </Link>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          )}
+
+          {mostrarCoral && (
+            <div className="flex flex-col overflow-hidden rounded-3xl border-2 border-blue-700 bg-white">
+              <div className="relative flex h-44 items-center justify-center sm:h-52 bg-purple-600">
+                <span aria-hidden="true" className="text-6xl">
+                  🎤
+                </span>
+
+                <img
+                  src="https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=900&q=80&fit=crop"
+                  alt=""
+                  loading="lazy"
+                  onError={(erro) => { erro.currentTarget.hidden = true; }}
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+
+              </div>
+
+              <div className="flex flex-1 flex-col p-5">
+                <h2 className="text-lg font-bold">
+                  <span aria-hidden="true">🎤 </span>Clube de Coral & Canto
+                </h2>
+
+                <div className="mt-3 space-y-3 text-sm">
+                  <p>
+                    <strong>Categoria:</strong> <span className="rounded px-1.5 py-0.5 text-white bg-purple-600">Arte e cultura</span>
+
+                  </p>
+
+                  <p>
+                    <strong>Líder:</strong> Leandro Morais
+                  </p>
+
+                  <p>
+                    <strong>Horário:</strong> A confirmar
+                  </p>
+
+                  <p>
+                    <strong>Local:</strong> Auditório / Sala 19
+                  </p>
+
+                </div>
+
+                <p className="mt-4 border-t border-slate-300 pt-4 text-sm leading-relaxed text-slate-700">
+                  Técnica vocal, percepção musical e ensaios de canto em grupo para apresentações nos eventos oficiais e datas comemorativas da escola.
+                </p>
+
+                <div className="mt-auto flex flex-col items-center gap-3 pt-5">
+                  <Link to="/clubes/coral-canto#participar" className="rounded-full bg-blue-600 px-6 py-2 text-xs font-bold uppercase text-white hover:bg-blue-800">
+                    Como participar
+                  </Link>
+
+                  <Link to="/clubes/coral-canto" className="text-xs font-semibold text-blue-700 hover:underline">
+                    Ver detalhes
+                  </Link>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          )}
+
+          {mostrarRadio && (
+            <div className="flex flex-col overflow-hidden rounded-3xl border-2 border-blue-700 bg-white">
+              <div className="relative flex h-44 items-center justify-center sm:h-52 bg-yellow-600">
+                <span aria-hidden="true" className="text-6xl">
+                  📻
+                </span>
+
+                <img
+                  src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=900&q=80&fit=crop"
+                  alt=""
+                  loading="lazy"
+                  onError={(erro) => { erro.currentTarget.hidden = true; }}
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+
+              </div>
+
+              <div className="flex flex-1 flex-col p-5">
+                <h2 className="text-lg font-bold">
+                  <span aria-hidden="true">📻 </span>Clube de Rádio & Podcast
+                </h2>
+
+                <div className="mt-3 space-y-3 text-sm">
+                  <p>
+                    <strong>Categoria:</strong> <span className="rounded px-1.5 py-0.5 text-white bg-yellow-600">Mídia & Comunicação</span>
+
+                  </p>
+
+                  <p>
+                    <strong>Líder:</strong> Wanderley e Anderson Baptista
+                  </p>
+
+                  <p>
+                    <strong>Horário:</strong> Terça e quinta às 16h00
+                  </p>
+
+                  <p>
+                    <strong>Local:</strong> Sala da Rádio
+                  </p>
+
+                </div>
+
+                <p className="mt-4 border-t border-slate-300 pt-4 text-sm leading-relaxed text-slate-700">
+                  Produção de podcasts, locução para os intervalos escolares, técnicas de edição de áudio e entrevistas com a comunidade escolar.
+                </p>
+
+                <div className="mt-auto flex flex-col items-center gap-3 pt-5">
+                  <Link to="/clubes/radio-podcast#participar" className="rounded-full bg-blue-600 px-6 py-2 text-xs font-bold uppercase text-white hover:bg-blue-800">
+                    Como participar
+                  </Link>
+
+                  <Link to="/clubes/radio-podcast" className="text-xs font-semibold text-blue-700 hover:underline">
+                    Ver detalhes
+                  </Link>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          )}
+
+          {mostrarRobotica && (
+            <div className="flex flex-col overflow-hidden rounded-3xl border-2 border-blue-700 bg-white">
+              <div className="relative flex h-44 items-center justify-center sm:h-52 bg-blue-600">
+                <span aria-hidden="true" className="text-6xl">
+                  🤖
+                </span>
+
+                <img
+                  src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=900&q=80&fit=crop"
+                  alt=""
+                  loading="lazy"
+                  onError={(erro) => { erro.currentTarget.hidden = true; }}
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+
+              </div>
+
+              <div className="flex flex-1 flex-col p-5">
+                <h2 className="text-lg font-bold">
+                  <span aria-hidden="true">🤖 </span>Clube de Robótica
+                </h2>
+
+                <div className="mt-3 space-y-3 text-sm">
+                  <p>
+                    <strong>Categoria:</strong> <span className="rounded px-1.5 py-0.5 text-white bg-blue-600">Tecnologia</span>
+
+                  </p>
+
+                  <p>
+                    <strong>Líder:</strong> A confirmar
+                  </p>
+
+                  <p>
+                    <strong>Horário:</strong> A confirmar
+                  </p>
+
+                  <p>
+                    <strong>Local:</strong> A confirmar
+                  </p>
+
+                </div>
+
+                <p className="mt-4 border-t border-slate-300 pt-4 text-sm leading-relaxed text-slate-700">
+                  Explore a tecnologia e a criatividade para transformar ideias em projetos e resolver desafios em equipe.
+                </p>
+
+                <div className="mt-auto flex flex-col items-center gap-3 pt-5">
+                  <Link to="/clubes/robotica#participar" className="rounded-full bg-blue-600 px-6 py-2 text-xs font-bold uppercase text-white hover:bg-blue-800">
+                    Como participar
+                  </Link>
+
+                  <Link to="/clubes/robotica" className="text-xs font-semibold text-blue-700 hover:underline">
+                    Ver detalhes
+                  </Link>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          )}
+
+          {mostrarLeitura && (
+            <div className="flex flex-col overflow-hidden rounded-3xl border-2 border-blue-700 bg-white">
+              <div className="relative flex h-44 items-center justify-center sm:h-52 bg-purple-600">
+                <span aria-hidden="true" className="text-6xl">
+                  📚
+                </span>
+
+                <img
+                  src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=900&q=80&fit=crop"
+                  alt=""
+                  loading="lazy"
+                  onError={(erro) => { erro.currentTarget.hidden = true; }}
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+
+              </div>
+
+              <div className="flex flex-1 flex-col p-5">
+                <h2 className="text-lg font-bold">
+                  <span aria-hidden="true">📚 </span>Clube de Leitura
+                </h2>
+
+                <div className="mt-3 space-y-3 text-sm">
+                  <p>
+                    <strong>Categoria:</strong> <span className="rounded px-1.5 py-0.5 text-white bg-purple-600">Arte e cultura</span>
+
+                  </p>
+
+                  <p>
+                    <strong>Líder:</strong> A confirmar
+                  </p>
+
+                  <p>
+                    <strong>Horário:</strong> A confirmar
+                  </p>
+
+                  <p>
+                    <strong>Local:</strong> A confirmar
+                  </p>
+
+                </div>
+
+                <p className="mt-4 border-t border-slate-300 pt-4 text-sm leading-relaxed text-slate-700">
+                  Descubra novas histórias e compartilhe suas leituras favoritas em um espaço de conversa e imaginação.
+                </p>
+
+                <div className="mt-auto flex flex-col items-center gap-3 pt-5">
+                  <Link to="/clubes/leitura#participar" className="rounded-full bg-blue-600 px-6 py-2 text-xs font-bold uppercase text-white hover:bg-blue-800">
+                    Como participar
+                  </Link>
+
+                  <Link to="/clubes/leitura" className="text-xs font-semibold text-blue-700 hover:underline">
+                    Ver detalhes
+                  </Link>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          )}
+
+        </div>
+
+        <p role="status" className="mt-6 text-center text-sm text-slate-600">
+          {!mostrarEsportes && !mostrarTaekwondo && !mostrarCoral && !mostrarRadio && !mostrarRobotica && !mostrarLeitura && "Nenhum clube encontrado. Tente outro tema ou categoria."}
+        </p>
 
       </section>
 
@@ -171,7 +540,11 @@ export default function Clubes() {
         <p className="text-center text-sm font-bold text-white">
           Escola Estadual Sanico Teles
         </p>
+
       </footer>
+
     </main>
+
   );
+
 }
