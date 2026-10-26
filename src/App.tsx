@@ -5,6 +5,8 @@ import InformarObjeto from "./paginas/informar-objeto";
 import Agenda from "./paginas/agenda";
 import Clubes from "./paginas/clubes";
 import DetalhesClube from "./paginas/detalhes-clube";
+import ProporClube from "./paginas/propor-clube";
+import InscricaoClube from "./paginas/inscricao-clube";
 import DatasComemorativas from "./paginas/datas-comemorativas";
 import Horarios from "./paginas/horarios";
 import Inicio from "./paginas/inicio";
@@ -32,7 +34,9 @@ export default function App() {
         <Route path="/datas-comemorativas" element={<DatasComemorativas />} />
         <Route path="/eventos" element={<Navigate to="/datas-comemorativas" replace />} />
         <Route path="/clubes" element={<Clubes />} />
+        <Route path="/clubes/propor" element={<ProporClube />} />
         <Route path="/clubes/:clube" element={<DetalhesClube />} />
+        <Route path="/clubes/:clube/inscricao" element={<InscricaoClube />} />
         <Route path="/agenda" element={<Agenda />} />
         <Route path="/achados-e-perdidos" element={<AchadosPerdidos />} />
         <Route path="/informar-objeto" element={<InformarObjeto />} />

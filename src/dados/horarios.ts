@@ -1,17 +1,17 @@
 
-const portugues = {"disciplina": "Língua Portuguesa"};
-const matematica = {"disciplina": "Matemática"};
-const historia = {"disciplina": "História"};
-const geografia = {"disciplina": "Geografia"};
-const ingles = {"disciplina": "Inglês"};
-const educacaoFisica = {"disciplina": "Educação Física"};
-const arte = {"disciplina": "Arte"};
-const biologia = {"disciplina": "Biologia"};
-const fisica = {"disciplina": "Física"};
-const quimica = {"disciplina": "Química"};
-const filosofia = {"disciplina": "Filosofia"};
-const sociologia = {"disciplina": "Sociologia"};
-const aulaTecnica = {"disciplina": "Componente técnico"};
+const portugues = {"disciplina": "????"};
+const matematica = {"disciplina": "????"};
+const historia = {"disciplina": "????"};
+const geografia = {"disciplina": "????"};
+const ingles = {"disciplina": "????"};
+const educacaoFisica = {"disciplina": "????"};
+const arte = {"disciplina": "????"};
+const biologia = {"disciplina": "????"};
+const fisica = {"disciplina": "????"};
+const quimica = {"disciplina": "????"};
+const filosofia = {"disciplina": "????"};
+const sociologia = {"disciplina": "????"};
+const aulaTecnica = {"disciplina": "????"};
 
 export const grades = [
   {

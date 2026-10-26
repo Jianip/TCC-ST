@@ -57,7 +57,7 @@ export default function Clubes() {
     <main className="flex min-h-screen flex-col bg-white text-slate-900">
       <Cabecalho />
 
-      <section className="mx-auto w-full max-w-5xl flex-1 px-5 py-9 sm:px-10">
+      <section className="mx-auto w-full max-w-7xl flex-1 px-5 py-9 sm:px-10">
         <div className="text-center">
           <h1 className="text-3xl font-bold text-blue-700">
             Clubes de Protagonismo
@@ -181,7 +181,7 @@ export default function Clubes() {
           Consulte os dias, horários e locais de cada clube. Informações não disponíveis estão indicadas como “A confirmar”.
         </p>
 
-        <div className="grid gap-7 sm:grid-cols-2 sm:gap-10">
+        <div className="grid gap-7 sm:grid-cols-2 lg:grid-cols-3 sm:gap-10">
           {mostrarRobotica && (
             <div className="flex flex-col overflow-hidden rounded-3xl border-2 border-blue-700 bg-white">
               <div className="relative flex h-44 items-center justify-center sm:h-52 bg-blue-600">
@@ -230,8 +230,8 @@ export default function Clubes() {
                 </p>
 
                 <div className="mt-auto flex flex-col items-center gap-3 pt-5">
-                  <Link to="/clubes/robotica#participar" className="rounded-full bg-blue-600 px-6 py-2 text-xs font-bold uppercase text-white hover:bg-blue-800">
-                    Como participar
+                  <Link to="/clubes/robotica/inscricao" className="rounded-full bg-blue-600 px-6 py-2 text-xs font-bold uppercase text-white hover:bg-blue-800">
+                    Inscrever-me
                   </Link>
 
                   <Link to="/clubes/robotica" className="text-xs font-semibold text-blue-700 hover:underline">
@@ -294,8 +294,8 @@ export default function Clubes() {
                 </p>
 
                 <div className="mt-auto flex flex-col items-center gap-3 pt-5">
-                  <Link to="/clubes/teatro#participar" className="rounded-full bg-blue-600 px-6 py-2 text-xs font-bold uppercase text-white hover:bg-blue-800">
-                    Como participar
+                  <Link to="/clubes/teatro/inscricao" className="rounded-full bg-blue-600 px-6 py-2 text-xs font-bold uppercase text-white hover:bg-blue-800">
+                    Inscrever-me
                   </Link>
 
                   <Link to="/clubes/teatro" className="text-xs font-semibold text-blue-700 hover:underline">
@@ -358,8 +358,8 @@ export default function Clubes() {
                 </p>
 
                 <div className="mt-auto flex flex-col items-center gap-3 pt-5">
-                  <Link to="/clubes/xadrez#participar" className="rounded-full bg-blue-600 px-6 py-2 text-xs font-bold uppercase text-white hover:bg-blue-800">
-                    Como participar
+                  <Link to="/clubes/xadrez/inscricao" className="rounded-full bg-blue-600 px-6 py-2 text-xs font-bold uppercase text-white hover:bg-blue-800">
+                    Inscrever-me
                   </Link>
 
                   <Link to="/clubes/xadrez" className="text-xs font-semibold text-blue-700 hover:underline">
@@ -422,8 +422,8 @@ export default function Clubes() {
                 </p>
 
                 <div className="mt-auto flex flex-col items-center gap-3 pt-5">
-                  <Link to="/clubes/leitura#participar" className="rounded-full bg-blue-600 px-6 py-2 text-xs font-bold uppercase text-white hover:bg-blue-800">
-                    Como participar
+                  <Link to="/clubes/leitura/inscricao" className="rounded-full bg-blue-600 px-6 py-2 text-xs font-bold uppercase text-white hover:bg-blue-800">
+                    Inscrever-me
                   </Link>
 
                   <Link to="/clubes/leitura" className="text-xs font-semibold text-blue-700 hover:underline">
@@ -486,8 +486,8 @@ export default function Clubes() {
                 </p>
 
                 <div className="mt-auto flex flex-col items-center gap-3 pt-5">
-                  <Link to="/clubes/esportes#participar" className="rounded-full bg-blue-600 px-6 py-2 text-xs font-bold uppercase text-white hover:bg-blue-800">
-                    Como participar
+                  <Link to="/clubes/esportes/inscricao" className="rounded-full bg-blue-600 px-6 py-2 text-xs font-bold uppercase text-white hover:bg-blue-800">
+                    Inscrever-me
                   </Link>
 
                   <Link to="/clubes/esportes" className="text-xs font-semibold text-blue-700 hover:underline">
@@ -550,8 +550,8 @@ export default function Clubes() {
                 </p>
 
                 <div className="mt-auto flex flex-col items-center gap-3 pt-5">
-                  <Link to="/clubes/taekwondo#participar" className="rounded-full bg-blue-600 px-6 py-2 text-xs font-bold uppercase text-white hover:bg-blue-800">
-                    Como participar
+                  <Link to="/clubes/taekwondo/inscricao" className="rounded-full bg-blue-600 px-6 py-2 text-xs font-bold uppercase text-white hover:bg-blue-800">
+                    Inscrever-me
                   </Link>
 
                   <Link to="/clubes/taekwondo" className="text-xs font-semibold text-blue-700 hover:underline">
@@ -614,8 +614,8 @@ export default function Clubes() {
                 </p>
 
                 <div className="mt-auto flex flex-col items-center gap-3 pt-5">
-                  <Link to="/clubes/coral-canto#participar" className="rounded-full bg-blue-600 px-6 py-2 text-xs font-bold uppercase text-white hover:bg-blue-800">
-                    Como participar
+                  <Link to="/clubes/coral-canto/inscricao" className="rounded-full bg-blue-600 px-6 py-2 text-xs font-bold uppercase text-white hover:bg-blue-800">
+                    Inscrever-me
                   </Link>
 
                   <Link to="/clubes/coral-canto" className="text-xs font-semibold text-blue-700 hover:underline">
@@ -678,8 +678,8 @@ export default function Clubes() {
                 </p>
 
                 <div className="mt-auto flex flex-col items-center gap-3 pt-5">
-                  <Link to="/clubes/radio-podcast#participar" className="rounded-full bg-blue-600 px-6 py-2 text-xs font-bold uppercase text-white hover:bg-blue-800">
-                    Como participar
+                  <Link to="/clubes/radio-podcast/inscricao" className="rounded-full bg-blue-600 px-6 py-2 text-xs font-bold uppercase text-white hover:bg-blue-800">
+                    Inscrever-me
                   </Link>
 
                   <Link to="/clubes/radio-podcast" className="text-xs font-semibold text-blue-700 hover:underline">
@@ -699,6 +699,18 @@ export default function Clubes() {
         <p role="status" className="mt-6 text-center text-sm text-slate-600">
           {!mostrarEsportes && !mostrarTaekwondo && !mostrarCoral && !mostrarRadio && !mostrarRobotica && !mostrarLeitura && !mostrarTeatro && !mostrarXadrez && "Nenhum clube encontrado. Tente outro tema ou categoria."}
         </p>
+
+        <div className="mt-10 border-t border-slate-300 pt-6">
+          <h2 className="text-lg font-bold text-blue-800">✚ Tem uma ideia de clube?</h2>
+
+          <p className="mt-3 text-sm">Reúna seus colegas e prepare uma proposta para a Coordenação Pedagógica.</p>
+
+          <div className="mt-5 flex justify-end">
+            <Link to="/clubes/propor" className="rounded-full bg-blue-600 px-5 py-2 text-sm font-bold text-white hover:bg-blue-800">+ Propor Novo Clube</Link>
+
+          </div>
+
+        </div>
 
       </section>
 

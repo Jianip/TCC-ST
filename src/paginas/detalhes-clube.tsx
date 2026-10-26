@@ -62,7 +62,7 @@ export default function DetalhesClube() {
           <h2 className="text-xl font-bold">Conheça as atividades</h2>
           <p className="mt-3 leading-7 text-slate-600">{escolhido.atividades}</p>
           <h2 id="participar" className="mt-6 text-xl font-bold">Quer participar?</h2>
-          <p className="mt-3 leading-7 text-slate-600">Procure a coordenação da escola para saber sobre inscrições, vagas e materiais necessários.</p>
+          <Link to={"/clubes/" + escolhido.id + "/inscricao"} className="mt-4 inline-block rounded-full bg-blue-600 px-6 py-2 text-sm font-bold uppercase text-white hover:bg-blue-800">Inscrever-me</Link>
         </div>
       </section>
 
