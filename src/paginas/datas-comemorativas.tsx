@@ -1,8 +1,9 @@
 import Cabecalho from "../componentes/cabecalho";
 import { useState } from "react";
-import { datas } from "../dados/datas-comemorativas";
+import { usePortal } from "../servicos/portal";
 
 export default function DatasComemorativas() {
+  const { catalogo: { datas } } = usePortal();
   const [busca, setBusca] = useState("");
   const [filtro, setFiltro] = useState("Todos");
 

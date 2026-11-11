@@ -1,23 +1,13 @@
 import Cabecalho from "../componentes/cabecalho";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { grades } from "../dados/horarios";
+import { usePortal } from "../servicos/portal";
+import { lerPreferencia, salvarPreferencia } from "../servicos/api";
 
-
-function carregarTurma() {
-  const turmaSalva = localStorage.getItem("turma-horarios");
-
-  for (const grade of grades) {
-    if (grade.turma === turmaSalva) {
-      return grade.turma;
-    }
-  }
-
-  return grades[0].turma;
-}
 
 export default function Horarios() {
-  const [turma, setTurma] = useState(carregarTurma);
+  const { catalogo: { grades } } = usePortal();
+  const [turma, setTurma] = useState(() => grades.find(g => g.turma === lerPreferencia("turma-horarios"))?.turma ?? grades[0].turma);
   const tecnico = turma.includes("Técnico");
 
   let modalidade = "Regular";
@@ -30,7 +20,7 @@ export default function Horarios() {
 
   function selecionarTurma(novaTurma: string) {
     setTurma(novaTurma);
-    localStorage.setItem("turma-horarios", novaTurma);
+    salvarPreferencia("turma-horarios", novaTurma);
   }
 
   
@@ -93,6 +83,8 @@ export default function Horarios() {
 
               <option value="2.1">2.1</option>
 
+              <option value="2.2">2.2</option>
+
               <option value="2 Técnico">2 Técnico</option>
 
               <option value="3.1">3.1</option>
@@ -145,7 +137,7 @@ export default function Horarios() {
 
         <p id="aviso-grade" className="mt-5 rounded-lg border border-slate-200 bg-white p-4 text-sm text-slate-600">
 
-          <strong>Grade demonstrativa:</strong> as disciplinas e sua distribuição são exemplos e precisam ser substituídos pelos dados oficiais da escola.
+          <strong>Aviso:</strong> algumas turmas ainda estão com disciplinas demonstrativas, que precisam ser substituídas pelos dados oficiais da escola.
 
         </p>
 

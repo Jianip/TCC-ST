@@ -1,11 +1,12 @@
 import Cabecalho from "../componentes/cabecalho";
 import { Link, useParams } from "react-router-dom";
 
-import { buscarClube } from "../dados/clubes";
+import { usePortal } from "../servicos/portal";
 
 export default function DetalhesClube() {
   const { clube } = useParams();
-  const escolhido = buscarClube(clube ?? "");
+  const { catalogo: { clubes, grades } } = usePortal();
+  const escolhido = clubes.find(item => item.id === clube);
 
   if (!escolhido) {
     return (

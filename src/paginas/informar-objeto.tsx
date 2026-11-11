@@ -1,9 +1,8 @@
+import { api, mensagemErro, modoDemo } from "../servicos/api";
 import Cabecalho from "../componentes/cabecalho";
 import { useState, type FormEvent, type ChangeEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
-  carregarObjetos,
-  salvarObjetos,
   categorias,
   hoje,
   dataValida,
@@ -11,6 +10,7 @@ import {
 
 export default function InformarObjeto() {
   const navegar = useNavigate();
+  const [enviando, setEnviando] = useState(false);
   const [foto, setFoto] = useState("");
   const [erro, setErro] = useState("");
   const [erroFoto, setErroFoto] = useState("");
@@ -63,10 +63,10 @@ export default function InformarObjeto() {
     campoFoto.value = "";
   }
 
-  function cadastrar(evento: FormEvent<HTMLFormElement>) {
+  async function cadastrar(evento: FormEvent<HTMLFormElement>) {
     evento.preventDefault();
 
-    if (lendoFoto || erroFoto) {
+    if (lendoFoto || erroFoto || enviando) {
       return;
     }
 
@@ -94,16 +94,9 @@ export default function InformarObjeto() {
       return;
     }
 
-    const dados = carregarObjetos();
-
-    if (dados.erro) {
-      setErro(dados.erro);
-      return;
-    }
-
+    setEnviando(true);
     try {
       const novoObjeto = {
-        id: crypto.randomUUID(),
         nome,
         categoria,
         local,
@@ -111,20 +104,17 @@ export default function InformarObjeto() {
         descricao,
         retirada,
         foto,
-        devolvido: false,
       };
 
       
-      const objetosAtualizados = [novoObjeto, ...dados.objetos];
-      salvarObjetos(objetosAtualizados);
+      await api("/objetos", "POST", novoObjeto);
 
       navegar("/achados-e-perdidos", {
         replace: true,
         state: { objetoCadastrado: true },
       });
-    } catch {
-      setErro("Não foi possível salvar o objeto. O armazenamento pode estar cheio ou bloqueado. Tente uma foto menor ou cadastre sem foto.");
-    }
+    } catch(error) { setErro(mensagemErro(error)); }
+    finally { setEnviando(false); }
   }
 
   return (
@@ -148,7 +138,7 @@ export default function InformarObjeto() {
           <h1 className="text-3xl font-bold">Encontrei um objeto</h1>
 
           <p className="mt-2 text-slate-500">
-            Descreva o objeto encontrado e informe onde o dono pode retirá-lo. O registro aparecerá na lista e ficará salvo apenas neste navegador.
+            {modoDemo ? "Cadastre um objeto fictício para demonstrar a tela. Ele ficará salvo somente neste navegador." : "Descreva o objeto encontrado e informe onde o dono pode retirá-lo. O registro aparecerá na lista do portal."}
 
           </p>
 
@@ -278,7 +268,7 @@ export default function InformarObjeto() {
                 name="foto"
                 accept="image/jpeg,image/png,image/webp"
                 onChange={selecionarFoto}
-                disabled={lendoFoto}
+                disabled={enviando || lendoFoto}
                 aria-describedby="ajuda-foto"
                 className="w-full rounded-lg border border-slate-300 p-3"
               />
@@ -322,7 +312,7 @@ export default function InformarObjeto() {
 
             <button
               type="submit"
-              disabled={lendoFoto || Boolean(erroFoto)}
+              disabled={enviando || lendoFoto || Boolean(erroFoto)}
               className="col-span-full rounded-lg bg-blue-700 px-5 py-3 font-bold text-white hover:bg-blue-800 disabled:opacity-50"
             >
               Cadastrar objeto

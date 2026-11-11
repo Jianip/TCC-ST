@@ -1,18 +1,23 @@
+import { api, mensagemErro, modoDemo } from "../servicos/api";
 import { useState, type FormEvent } from "react";
 import { Link, useParams } from "react-router-dom";
 import Cabecalho from "../componentes/cabecalho";
-import { buscarClube } from "../dados/clubes";
-import { pegarPerfil } from "../dados/perfil";
+import { usePortal } from "../servicos/portal";
+import { usePerfil } from "../servicos/portal";
 
 export default function InscricaoClube() {
   const { clube } = useParams();
-  const escolhido = buscarClube(clube ?? "");
-  const perfil = pegarPerfil();
+  const { catalogo: { clubes, grades } } = usePortal();
+  const escolhido = clubes.find(item => item.id === clube);
+  const perfil = usePerfil();
+  const [enviando, setEnviando] = useState(false);
   const [sucesso, setSucesso] = useState(false);
   const [erro, setErro] = useState("");
 
-  function confirmarInscricao(evento: FormEvent<HTMLFormElement>) {
+  async function confirmarInscricao(evento: FormEvent<HTMLFormElement>) {
     evento.preventDefault();
+    if(enviando) return;
+    setEnviando(true);
 
     const formulario = new FormData(evento.currentTarget);
     const inscricao = {
@@ -26,12 +31,12 @@ export default function InscricaoClube() {
     };
 
     try {
-      localStorage.setItem("inscricao-clube-" + clube, JSON.stringify(inscricao));
+      await api("/inscricoes", "POST", inscricao);
       setErro("");
       setSucesso(true);
-    } catch {
-      setErro("Não foi possível salvar. Tente novamente.");
-    }
+    } catch(error) {
+      setErro(mensagemErro(error));
+    } finally { setEnviando(false); }
 
   }
 
@@ -79,7 +84,7 @@ export default function InscricaoClube() {
 
               <label className="block text-sm font-semibold">
                 Turma
-                <input name="turma" required placeholder="Ex.: 2º Ano B" className="mt-1 block w-full rounded border border-slate-400 p-2 font-normal" />
+                <select name="turma" required className="mt-1 block w-full rounded border p-2">{grades.map(g => <option key={g.turma}>{g.turma}</option>)}</select>
 
               </label>
 
@@ -113,14 +118,14 @@ export default function InscricaoClube() {
                 : "Confirmo que tenho disponibilidade no horário das reuniões (" + escolhido.dias + ", " + escolhido.horario + ")."}
             </label>
 
-            <p className="text-xs text-slate-600">A inscrição será salva neste navegador. A confirmação com a escola deve ser feita na coordenação.</p>
+            <p className="text-xs text-slate-600">{modoDemo ? "Esta inscrição é uma simulação local e não confirma participação no clube." : "Sua inscrição será registrada no portal. A confirmação depende da coordenação."}</p>
 
             {erro && <p role="alert" className="text-sm text-red-700">{erro}</p>}
 
             <div className="flex flex-wrap justify-end gap-3">
               <Link to="/clubes" className="rounded-full border border-slate-400 px-4 py-2 text-xs font-bold uppercase">Cancelar</Link>
 
-              <button type="submit" className="rounded-full bg-blue-600 px-4 py-2 text-xs font-bold uppercase text-white hover:bg-blue-800">Confirmar inscrição</button>
+              <button disabled={enviando} type="submit" className="rounded-full bg-blue-600 px-4 py-2 text-xs font-bold uppercase text-white hover:bg-blue-800">Confirmar inscrição</button>
 
             </div>
 
@@ -131,9 +136,9 @@ export default function InscricaoClube() {
           <div role="status" className="space-y-4 border-4 border-slate-200 bg-white p-6">
             <h1 className="text-2xl font-bold">Mensagem de sucesso</h1>
 
-            <p className="font-semibold">🎉 Inscrição salva com sucesso neste navegador!</p>
+            <p className="font-semibold">🎉 Inscrição registrada com sucesso!</p>
 
-            <p className="text-sm">Procure a coordenação para confirmar sua participação no {escolhido.nome}. Não há envio automático de e-mail.</p>
+            <p className="text-sm">{modoDemo ? "Simulação salva somente neste navegador. Nenhuma inscrição ou e-mail foi enviado à escola." : `Procure a coordenação para confirmar sua participação no ${escolhido.nome}. Não há envio automático de e-mail.`}</p>
 
             <Link to="/clubes" className="inline-block text-blue-700 underline">Voltar aos clubes</Link>
 

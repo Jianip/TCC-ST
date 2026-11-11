@@ -1,13 +1,17 @@
+import { api, mensagemErro, modoDemo } from "../servicos/api";
 import { useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
 import Cabecalho from "../componentes/cabecalho";
 
 export default function ProporClube() {
+  const [enviando, setEnviando] = useState(false);
   const [sucesso, setSucesso] = useState(false);
   const [erro, setErro] = useState("");
 
-  function salvarProposta(evento: FormEvent<HTMLFormElement>) {
+  async function salvarProposta(evento: FormEvent<HTMLFormElement>) {
     evento.preventDefault();
+    if(enviando) return;
+    setEnviando(true);
 
     const formulario = new FormData(evento.currentTarget);
     const proposta = {
@@ -21,12 +25,12 @@ export default function ProporClube() {
     };
 
     try {
-      localStorage.setItem("proposta-clube-" + Date.now(), JSON.stringify(proposta));
+      await api("/propostas", "POST", proposta);
       setErro("");
       setSucesso(true);
-    } catch {
-      setErro("Não foi possível salvar a proposta. Tente novamente.");
-    }
+    } catch(error) {
+      setErro(mensagemErro(error));
+    } finally { setEnviando(false); }
 
   }
 
@@ -85,7 +89,7 @@ export default function ProporClube() {
                 </label>
 
                 <label className="flex cursor-pointer items-center gap-2 rounded-full bg-slate-100 px-3 py-2 text-sm">
-                  <input type="radio" name="categoria" value="Esporte" required />
+                  <input type="radio" name="categoria" value="Esportes" required />
                   <span className="h-3 w-3 rounded-full bg-red-600" aria-hidden="true" />
                   Esporte
                 </label>
@@ -97,13 +101,13 @@ export default function ProporClube() {
                 </label>
 
                 <label className="flex cursor-pointer items-center gap-2 rounded-full bg-slate-100 px-3 py-2 text-sm">
-                  <input type="radio" name="categoria" value="Arte & Cultura & Música" required />
+                  <input type="radio" name="categoria" value="Arte e cultura" required />
                   <span className="h-3 w-3 rounded-full bg-purple-600" aria-hidden="true" />
                   Arte & Cultura & Música
                 </label>
 
                 <label className="flex cursor-pointer items-center gap-2 rounded-full bg-slate-100 px-3 py-2 text-sm">
-                  <input type="radio" name="categoria" value="Mídia" required />
+                  <input type="radio" name="categoria" value="Mídia & Comunicação" required />
                   <span className="h-3 w-3 rounded-full bg-yellow-600" aria-hidden="true" />
                   Mídia
                 </label>
@@ -130,7 +134,7 @@ export default function ProporClube() {
             <div className="space-y-2 text-sm">
               <h2 className="font-bold">Como funciona após salvar?</h2>
 
-              <p>A proposta ficará salva apenas neste navegador. Procure a Coordenação Pedagógica para apresentar sua ideia e confirmar espaço e horário.</p>
+              <p>{modoDemo ? "Esta proposta será salva apenas para demonstração neste navegador, sem envio à coordenação." : "A proposta será registrada na sua conta. A aprovação depende da coordenação."}</p>
 
             </div>
 
@@ -139,7 +143,7 @@ export default function ProporClube() {
             <div className="flex flex-wrap justify-end gap-3">
               <Link to="/clubes" className="rounded-full border border-slate-400 px-4 py-2 text-xs font-bold uppercase">Cancelar</Link>
 
-              <button type="submit" className="rounded-full bg-blue-600 px-4 py-2 text-xs font-bold uppercase text-white hover:bg-blue-800">Salvar proposta</button>
+              <button disabled={enviando} type="submit" className="rounded-full bg-blue-600 px-4 py-2 text-xs font-bold uppercase text-white hover:bg-blue-800">Salvar proposta</button>
 
             </div>
 
@@ -150,7 +154,7 @@ export default function ProporClube() {
           <div role="status" className="space-y-4 border-4 border-slate-200 bg-white p-6">
             <h1 className="text-2xl font-bold">Proposta salva!</h1>
 
-            <p>Sua ideia foi salva neste navegador. Para apresentar a proposta à escola, procure a Coordenação Pedagógica.</p>
+            <p>{modoDemo ? "Proposta demonstrativa salva neste navegador. Nenhuma proposta foi enviada à escola." : "Sua proposta foi registrada no portal. Procure a coordenação para acompanhar a avaliação."}</p>
 
             <Link to="/clubes" className="inline-block text-blue-700 underline">Voltar aos clubes</Link>
 

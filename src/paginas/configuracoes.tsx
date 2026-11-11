@@ -1,6 +1,7 @@
 import Cabecalho from "../componentes/cabecalho";
 import { ChangeEvent, FormEvent, useState } from "react";
-import { pegarPerfil, salvarPerfil } from "../dados/perfil";
+import { usePerfil, usePortal, type Usuario } from "../servicos/portal";
+import { api, mensagemErro } from "../servicos/api";
 
 type ConfiguracoesProps = {
   modoEscuro: boolean;
@@ -13,16 +14,24 @@ export default function Configuracoes({
 }:
 
  ConfiguracoesProps) {
-  const perfil = pegarPerfil();
+  const perfil = usePerfil();
+  const { setUsuario } = usePortal();
+  const [enviando, setEnviando] = useState(false);
+  const [lendoFoto, setLendoFoto] = useState(false);
   const [nome, setNome] = useState(perfil.nome);
   const [email, setEmail] = useState(perfil.email);
   const [foto, setFoto] = useState(perfil.foto);
   const [mensagem, setMensagem] = useState("");
 
-  function salvarConfiguracoes(evento: FormEvent<HTMLFormElement>) {
+  async function salvarConfiguracoes(evento: FormEvent<HTMLFormElement>) {
     evento.preventDefault();
-    salvarPerfil({ nome, email, foto });
-    setMensagem("Configurações salvas com sucesso!");
+    if (enviando || lendoFoto) return;
+    setEnviando(true);
+    try {
+      const usuario = await api<Usuario>("/perfil", "PUT", { nome, email, foto });
+      setUsuario(usuario); setMensagem("Configurações salvas com sucesso!");
+    } catch(error) { setMensagem(mensagemErro(error)); }
+    finally { setEnviando(false); }
   }
 
   function escolherFoto(evento: ChangeEvent<HTMLInputElement>) {
@@ -30,8 +39,13 @@ export default function Configuracoes({
 
     if (!arquivo) return;
 
+    if (!["image/jpeg", "image/png", "image/webp"].includes(arquivo.type) || arquivo.size > 2 * 1024 * 1024) {
+      setMensagem("Escolha uma imagem JPG, PNG ou WebP de até 2 MB."); return;
+    }
+    setLendoFoto(true);
     const leitor = new FileReader();
-    leitor.onload = () => setFoto(leitor.result as string);
+    leitor.onload = () => { setFoto(leitor.result as string); setLendoFoto(false); };
+    leitor.onerror = () => { setMensagem("Não foi possível ler a imagem."); setLendoFoto(false); };
     leitor.readAsDataURL(arquivo);
   }
 
@@ -60,7 +74,7 @@ export default function Configuracoes({
                 Escolher foto
               </label>
 
-              <input id="foto-perfil" type="file" accept="image/*" onChange={escolherFoto} className="hidden" />
+              <input id="foto-perfil" type="file" disabled={lendoFoto} accept="image/jpeg,image/png,image/webp" onChange={escolherFoto} className="hidden" />
             </div>
 
           </div>
@@ -70,14 +84,14 @@ export default function Configuracoes({
             <div>
               
               <label className="mb-2 block text-sm font-bold">Nome</label>
-              <input value={nome} onChange={(evento) => setNome(evento.target.value)} className="w-full rounded-lg border border-slate-300 px-3 py-2.5 outline-none focus:border-blue-600" />
+              <input required minLength={3} maxLength={120} value={nome} onChange={(evento) => setNome(evento.target.value)} className="w-full rounded-lg border border-slate-300 px-3 py-2.5 outline-none focus:border-blue-600" />
             
             </div>
 
             <div>
 
               <label className="mb-2 block text-sm font-bold">E-mail</label>
-              <input type="email" value={email} onChange={(evento) => setEmail(evento.target.value)} className="w-full rounded-lg border border-slate-300 px-3 py-2.5 outline-none focus:border-blue-600" />
+              <input required maxLength={254} type="email" value={email} onChange={(evento) => setEmail(evento.target.value)} className="w-full rounded-lg border border-slate-300 px-3 py-2.5 outline-none focus:border-blue-600" />
             
             </div>
 
@@ -103,9 +117,9 @@ export default function Configuracoes({
 
           </div>
 
-          {mensagem && <p className="mt-5 text-sm font-bold text-green-700">{mensagem}</p>}
+          {mensagem && <p role="status" className="mt-5 text-sm font-bold text-green-700">{mensagem}</p>}
 
-          <button type="submit" className="mt-7 w-full rounded-lg bg-blue-700 px-5 py-3 font-bold text-white hover:bg-blue-800">Salvar alterações</button>
+          <button disabled={enviando || lendoFoto} type="submit" className="mt-7 w-full rounded-lg bg-blue-700 px-5 py-3 font-bold text-white hover:bg-blue-800">Salvar alterações</button>
         
         </form>
 

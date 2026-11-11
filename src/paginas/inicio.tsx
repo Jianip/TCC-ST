@@ -1,29 +1,19 @@
 import Cabecalho from "../componentes/cabecalho";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { pegarPerfil } from "../dados/perfil";
-import { grades } from "../dados/horarios";
+import { usePerfil } from "../servicos/portal";
+import { usePortal } from "../servicos/portal";
+import { lerPreferencia, salvarPreferencia } from "../servicos/api";
 
-
-function carregarTurma() {
-  const turmaSalva = localStorage.getItem("turma-horarios");
-
-  for (const grade of grades) {
-    if (grade.turma === turmaSalva) {
-      return grade.turma;
-    }
-  }
-
-  return grades[0].turma;
-}
 
 export default function Inicio() {
-  const perfil = pegarPerfil();
-  const [turma, setTurma] = useState(carregarTurma);
+  const perfil = usePerfil();
+  const { catalogo: { grades } } = usePortal();
+  const [turma, setTurma] = useState(() => grades.find(g => g.turma === lerPreferencia("turma-horarios"))?.turma ?? grades[0].turma);
 
   function selecionarTurma(novaTurma: string) {
     setTurma(novaTurma);
-    localStorage.setItem("turma-horarios", novaTurma);
+    salvarPreferencia("turma-horarios", novaTurma);
   }
 
   
@@ -35,6 +25,9 @@ export default function Inicio() {
     }
   }
 
+  const hoje = new Date();
+  const primeiroDia = new Date(hoje.getFullYear(), hoje.getMonth(), 1).getDay();
+  const totalDias = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 0).getDate();
   const dias = [
     "Segunda-feira",
     "Terça-feira",
@@ -104,7 +97,7 @@ export default function Inicio() {
             <div className="flex flex-1 flex-col overflow-hidden rounded-xl border border-slate-200 bg-white">
 
               <div className="border-b border-slate-200 px-3 py-2.5 text-center font-bold text-blue-700">
-                Julho 2026
+                {hoje.toLocaleDateString("pt-BR", {month: "long", year: "numeric"})}
 
               </div>
 
@@ -128,75 +121,10 @@ export default function Inicio() {
 
               <div className="grid flex-1 auto-rows-fr grid-cols-7 [&>div]:flex [&>div]:min-h-9 [&>div]:items-center [&>div]:justify-center [&>div]:border-b [&>div]:border-r [&>div]:border-slate-100 [&>div]:text-xs">
 
-                <div></div>
-
-                <div></div>
-
-                <div></div>
-
-                <div>1</div>
-
-                <div>2</div>
-
-                <div>3</div>
-
-                <div>4</div>
-
-                <div>5</div>
-
-                <div>6</div>
-
-                <div>7</div>
-
-                <div>8</div>
-
-                <div>9</div>
-
-                <div>10</div>
-
-                <div>11</div>
-
-                <div>12</div>
-
-                <div>13</div>
-
-                <div>14</div>
-
-                <div>15</div>
-
-                <div>16</div>
-
-                <div>17</div>
-
-                <div>18</div>
-
-                <div>19</div>
-
-                <div>20</div>
-
-                <div>21</div>
-
-                <div>22</div>
-
-                <div>23</div>
-
-                <div>24</div>
-
-                <div>25</div>
-
-                <div>26</div>
-
-                <div>27</div>
-
-                <div>28</div>
-
-                <div>29</div>
-
-                <div>30</div>
-
-                <div>31</div>
-
-                <div></div>
+                {Array.from({length: Math.ceil((primeiroDia + totalDias) / 7) * 7}, (_, index) => {
+                  const dia = index - primeiroDia + 1;
+                  return <div key={index} className={dia === hoje.getDate() ? "bg-blue-100 font-bold" : ""}>{dia > 0 && dia <= totalDias ? dia : ""}</div>;
+                })}
 
               </div>
 

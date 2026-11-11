@@ -1,5 +1,8 @@
+import Login from "./paginas/login";
+import { usePortal } from "./servicos/portal";
+import { lerPreferencia, salvarPreferencia } from "./servicos/api";
 import { useState } from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import AchadosPerdidos from "./paginas/achados-perdidos";
 import InformarObjeto from "./paginas/informar-objeto";
 import Agenda from "./paginas/agenda";
@@ -11,16 +14,21 @@ import DatasComemorativas from "./paginas/datas-comemorativas";
 import Horarios from "./paginas/horarios";
 import Inicio from "./paginas/inicio";
 import Configuracoes from "./paginas/configuracoes";
+import Cardapio from "./paginas/cardapio";
 
 export default function App() {
   const [modoEscuro, setModoEscuro] = useState(
-    localStorage.getItem("tema") === "escuro",
+    lerPreferencia("tema") === "escuro",
   );
 
   function mudarTema() {
     setModoEscuro(!modoEscuro);
-    localStorage.setItem("tema", modoEscuro ? "claro" : "escuro");
+    salvarPreferencia("tema", modoEscuro ? "claro" : "escuro");
   }
+
+  const { usuario } = usePortal();
+  const location = useLocation();
+  if (!usuario && location.pathname !== "/login") return <Navigate to="/login" replace />;
 
   return (
     <div className={modoEscuro ? "modo-escuro" : ""}>
@@ -28,9 +36,10 @@ export default function App() {
         <Route path="/" element={<Inicio />} />
         <Route
           path="/login"
-          element={<Navigate to="/" replace />}
+          element={<Login />}
         />
         <Route path="/horarios" element={<Horarios />} />
+        <Route path="/cardapio" element={<Cardapio />} />
         <Route path="/datas-comemorativas" element={<DatasComemorativas />} />
         <Route path="/eventos" element={<Navigate to="/datas-comemorativas" replace />} />
         <Route path="/clubes" element={<Clubes />} />
@@ -49,6 +58,7 @@ export default function App() {
             />
           }
         />
+        <Route path="*" element={<main className="p-10">Página não encontrada. <a href="/">Voltar ao início</a></main>} />
       </Routes>
     </div>
   );

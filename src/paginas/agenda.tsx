@@ -1,5 +1,7 @@
+import { api, mensagemErro } from "../servicos/api";
+import { dataValida } from "../dados/achados-perdidos";
 import Cabecalho from "../componentes/cabecalho";
-import { FormEvent, useState } from "react";
+import { FormEvent, useState, useEffect } from "react";
 
 
 type Compromisso = {
@@ -25,14 +27,6 @@ const meses = [
   "Dezembro",
 ];
 
-function lerCompromissos() {
-  const dados = localStorage.getItem("agenda-escolar");
-  if (dados) {
-    return JSON.parse(dados) as Compromisso[];
-  }
-  return [];
-}
-
 function dataParaInput(data: Date) {
   const ano = data.getFullYear();
   const mes = String(data.getMonth() + 1).padStart(2, "0");
@@ -47,7 +41,10 @@ export default function Agenda() {
   const [aberto, setAberto] = useState(false);
 
 
-  const [compromissos, setCompromissos] = useState(lerCompromissos);
+  const [compromissos, setCompromissos] = useState<Compromisso[]>([]);
+  const [erro, setErro] = useState("");
+  const [enviando, setEnviando] = useState(false);
+  useEffect(() => { api<Compromisso[]>("/agenda").then(setCompromissos).catch(e => setErro(mensagemErro(e))); }, []);
 
 
   const [titulo, setTitulo] = useState("");
@@ -65,32 +62,23 @@ export default function Agenda() {
     setMes(new Date(ano, numeroMes + numero, 1));
   }
 
-  function salvar(evento: FormEvent<HTMLFormElement>) {
+  async function salvar(evento: FormEvent<HTMLFormElement>) {
     evento.preventDefault();
-
-    const lista = [...compromissos];
-
-    if (idEditando === null) {
-    
-      const novo = { id: Date.now(), titulo, data, descricao, cor };
-      lista.push(novo);
-    } else {
-    
-      for (let posicao = 0; posicao < lista.length; posicao++) {
-        if (lista[posicao].id === idEditando) {
-          lista[posicao] = { id: idEditando, titulo, data, descricao, cor };
-        }
+    if (enviando) return;
+    if (!titulo.trim() || !dataValida(data)) { setErro("Informe título e data válidos."); return; }
+    setEnviando(true); setErro("");
+    try {
+      const item = { titulo: titulo.trim(), data, descricao, cor };
+      if (idEditando === null) {
+        const novo = await api<Compromisso>("/agenda", "POST", item);
+        setCompromissos(lista => [...lista, novo]);
+      } else {
+        await api(`/agenda/${idEditando}`, "PUT", item);
+        setCompromissos(lista => lista.map(c => c.id === idEditando ? {id: idEditando, ...item} : c));
       }
-    }
-
-    setCompromissos(lista);
-    localStorage.setItem("agenda-escolar", JSON.stringify(lista));
-
-    irParaData(data);
-    setTitulo("");
-    setDescricao("");
-    setIdEditando(null);
-    setAberto(false);
+      irParaData(data); setTitulo(""); setDescricao(""); setIdEditando(null); setAberto(false);
+    } catch(error) { setErro(mensagemErro(error)); }
+    finally { setEnviando(false); }
   }
 
   function novoCompromisso() {
@@ -111,10 +99,12 @@ export default function Agenda() {
     setAberto(true);
   }
 
-  function excluir(id: number) {
-    const lista = compromissos.filter((compromisso) => compromisso.id !== id);
-    setCompromissos(lista);
-    localStorage.setItem("agenda-escolar", JSON.stringify(lista));
+  async function excluir(id: number) {
+    if(enviando) return;
+    setEnviando(true);
+    try { await api(`/agenda/${id}`, "DELETE"); setCompromissos(lista => lista.filter(c => c.id !== id)); setErro(""); }
+    catch(error) { setErro(mensagemErro(error)); }
+    finally { setEnviando(false); }
   }
 
   function irParaData(dataEscolhida: string) {
@@ -189,6 +179,7 @@ export default function Agenda() {
           Adicione seus compromissos, tarefas e avaliações.
         </p>
 
+        {erro && !aberto && <p role="alert" className="mt-4 text-red-700">{erro}</p>}
         <div className="mt-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
           <button
             onClick={novoCompromisso}
@@ -474,6 +465,7 @@ export default function Agenda() {
               <label className="mt-5 block text-sm font-bold">Título</label>
               <input
                 required
+                maxLength={120}
                 value={titulo}
                 onChange={(evento) => setTitulo(evento.target.value)}
                 className="mt-2 w-full rounded-lg border border-slate-300 px-3 py-2"
@@ -494,6 +486,7 @@ export default function Agenda() {
               </label>
               
               <textarea
+                maxLength={4000}
                 value={descricao}
                 onChange={(evento) => setDescricao(evento.target.value)}
                 className="mt-2 w-full rounded-lg border border-slate-300 px-3 py-2"
@@ -511,7 +504,8 @@ export default function Agenda() {
                 className="mt-2 h-10 w-full cursor-pointer rounded border border-slate-300"
               />
 
-              <button className="mt-5 w-full rounded-lg bg-blue-700 px-4 py-3 font-bold text-white hover:bg-blue-800">
+              {erro && <p role="alert" className="text-red-700">{erro}</p>}
+              <button disabled={enviando} className="mt-5 w-full rounded-lg bg-blue-700 px-4 py-3 font-bold text-white hover:bg-blue-800">
                 {textoBotao}
               </button>
 

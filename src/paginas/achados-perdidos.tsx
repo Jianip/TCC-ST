@@ -1,17 +1,20 @@
+import { api, mensagemErro, modoDemo } from "../servicos/api";
 import Cabecalho from "../componentes/cabecalho";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   categorias,
-  carregarObjetos,
-  salvarObjetos,
   filtrarObjetos,
   type Objeto,
 } from "../dados/achados-perdidos";
 
 export default function AchadosPerdidos() {
   const location = useLocation();
-  const [dados, setDados] = useState(carregarObjetos);
+  const [dados, setDados] = useState<{objetos: Objeto[]; erro: string}>({objetos: [], erro: ""});
+  const [enviando, setEnviando] = useState(false);
+  useEffect(() => {
+    api<Objeto[]>("/objetos").then(objetos => setDados({objetos, erro: ""})).catch(error => setDados({objetos: [], erro: mensagemErro(error)}));
+  }, []);
 
   
   const [busca, setBusca] = useState("");
@@ -57,65 +60,25 @@ export default function AchadosPerdidos() {
     return `${dia}/${mes}/${ano}`;
   }
 
-  function atualizarObjetos(objetos: Objeto[], mensagem: string) {
+  async function excluirObjeto(objeto: Objeto) {
+    if(enviando || !window.confirm(`Excluir "${objeto.nome}"?`)) return;
+    setEnviando(true);
     try {
-      salvarObjetos(objetos);
-      setDados({ objetos, erro: "" });
-      setErro("");
-      setMensagem(mensagem);
-      return true;
-    } catch {
-      setMensagem("");
-      setErro("Não foi possível salvar. Verifique o armazenamento do navegador e tente novamente.");
-      return false;
-    }
+      await api(`/objetos/${objeto.id}`, "DELETE");
+      setDados(d => ({...d, objetos: d.objetos.filter(o => o.id !== objeto.id)}));
+      setLocal(""); setMensagem("Objeto excluído."); setErro("");
+    } catch(error) { setErro(mensagemErro(error)); }
+    finally { setEnviando(false); }
   }
-
-  function excluirObjeto(objeto: Objeto) {
-    const objetosAtualizados: Objeto[] = [];
-    let localAindaExiste = false;
-
-    for (const item of dados.objetos) {
-      if (item.id !== objeto.id) {
-        objetosAtualizados.push(item);
-
-        if (item.local === local) {
-          localAindaExiste = true;
-        }
-      }
-    }
-
-    const salvou = atualizarObjetos(
-      objetosAtualizados,
-      `Objeto "${objeto.nome}" excluído com sucesso.`
-    );
-
-    if (salvou && local === objeto.local && !localAindaExiste) {
-      setLocal("");
-    }
-  }
-
-  function alterarStatus(objeto: Objeto) {
-    const objetosAtualizados: Objeto[] = [];
-
-    for (const item of dados.objetos) {
-      if (item.id === objeto.id) {
-       
-        const objetoAtualizado = { ...item };
-        objetoAtualizado.devolvido = !item.devolvido;
-        objetosAtualizados.push(objetoAtualizado);
-      } else {
-        objetosAtualizados.push(item);
-      }
-    }
-
-    let mensagem = "Objeto marcado como devolvido.";
-
-    if (objeto.devolvido) {
-      mensagem = "Objeto disponível novamente.";
-    }
-
-    atualizarObjetos(objetosAtualizados, mensagem);
+  async function alterarStatus(objeto: Objeto) {
+    if(enviando) return;
+    setEnviando(true);
+    try {
+      await api(`/objetos/${objeto.id}`, "PATCH", {devolvido: !objeto.devolvido});
+      setDados(d => ({...d, objetos: d.objetos.map(o => o.id === objeto.id ? {...o, devolvido: !o.devolvido} : o)}));
+      setMensagem("Situação atualizada."); setErro("");
+    } catch(error) { setErro(mensagemErro(error)); }
+    finally { setEnviando(false); }
   }
 
   return (
@@ -135,7 +98,7 @@ export default function AchadosPerdidos() {
         </p>
 
         <p className="mt-2 text-sm text-slate-500">
-          Os registros são salvos apenas neste navegador.
+          {modoDemo ? "Os objetos desta demonstração ficam somente neste navegador; não são compartilhados com outros alunos." : "Os registros são compartilhados no portal. Somente o autor pode alterar ou excluir."}
         </p>
 
         {mensagem && (
@@ -343,7 +306,7 @@ export default function AchadosPerdidos() {
 
                   <button
                     type="button"
-                    disabled={Boolean(dados.erro)}
+                    disabled={enviando || !objeto.podeEditar || Boolean(dados.erro)}
                     onClick={() => alterarStatus(objeto)}
                     className="rounded-lg border border-blue-700 px-3 py-2 text-sm font-semibold text-blue-700 hover:bg-blue-50 disabled:opacity-50"
                   >
@@ -352,7 +315,7 @@ export default function AchadosPerdidos() {
 
                   <button
                     type="button"
-                    disabled={Boolean(dados.erro)}
+                    disabled={enviando || !objeto.podeEditar || Boolean(dados.erro)}
                     onClick={() => excluirObjeto(objeto)}
                     aria-label={`Excluir ${objeto.nome}`}
                     className="rounded-lg border border-red-700 px-3 py-2 text-sm font-semibold text-red-700 hover:bg-red-50 disabled:opacity-50"

@@ -1,5 +1,7 @@
+import { useState } from "react";
+import { api, mensagemErro } from "../servicos/api";
 import { Link, NavLink } from "react-router-dom";
-import { pegarPerfil } from "../dados/perfil";
+import { usePerfil, usePortal } from "../servicos/portal";
 
 const abas = [
   { caminho: "/", nome: "Início" },
@@ -7,11 +9,18 @@ const abas = [
   { caminho: "/clubes", nome: "Clubes" },
   { caminho: "/agenda", nome: "Agenda Escolar" },
   { caminho: "/horarios", nome: "Horários Escolares" },
+  { caminho: "/cardapio", nome: "Cardápio" },
   { caminho: "/achados-e-perdidos", nome: "Achados e Perdidos" },
 ];
 
 export default function Cabecalho() {
-  const perfil = pegarPerfil();
+  const perfil = usePerfil();
+  const { setUsuario } = usePortal();
+  const [erro, setErro] = useState("");
+  async function sair() {
+    try { await api("/auth/logout", "POST"); setUsuario(null); }
+    catch(error) { setErro(mensagemErro(error)); }
+  }
 
   return (
     <nav aria-label="Navegação principal" className="bg-[#154a99] px-5 py-3 text-white shadow-md">
@@ -39,6 +48,8 @@ export default function Cabecalho() {
         <div className="col-start-2 row-start-1 flex items-center justify-end gap-2 lg:col-start-3">
           <span className="max-w-40 truncate text-xs sm:max-w-52" title={perfil.nome}>Olá, {perfil.nome}</span>
           <img src={perfil.foto} alt="Foto do perfil" className="h-9 w-9 shrink-0 rounded-full object-cover" />
+          <button type="button" onClick={sair} className="text-xs underline">Sair</button>
+          {erro && <span role="alert">{erro}</span>}
           <NavLink to="/configuracoes" aria-label="Configurações" className="rounded p-1 text-xl hover:bg-blue-800">⚙️</NavLink>
         </div>
       </div>
